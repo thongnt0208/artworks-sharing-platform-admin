@@ -176,5 +176,11 @@ export const paths = {
         edit: `${ROOTS.DASHBOARD}/tour/${MOCK_ID}/edit`,
       },
     },
+    moderate: {
+      root: `${ROOTS.DASHBOARD}/moderate`,
+    },
+    report: {
+      root: `${ROOTS.DASHBOARD}/report`,
+    },
   },
 };
