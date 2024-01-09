@@ -18,3 +18,69 @@
 @import 'yet-another-react-lightbox/styles.css';
 @import 'yet-another-react-lightbox/plugins/captions.css';
 @import 'yet-another-react-lightbox/plugins/thumbnails.css';
+
+.text-cus-title {
+  font-size: 40px;
+  font-weight: bold;
+  line-height: 18.2px;
+}
+
+.text-cus-h1 {
+  font-size: 24px;
+  font-weight: 500; /* medium */
+  line-height: 31.2px;
+}
+
+.text-cus-h1-bold {
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 31.2px;
+}
+
+.text-cus-h2 {
+  font-size: 20px;
+  font-weight: 500; /* medium */
+  line-height: 26px;
+}
+
+.text-cus-h2-bold {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 26px;
+}
+
+.text-cus-h3 {
+  font-size: 17px;
+  font-weight: 500; /* medium */
+  line-height: 20.8px;
+}
+
+.text-cus-h3-bold {
+  font-size: 17px;
+  font-weight: bold;
+  line-height: 20.8px;
+}
+
+.text-cus-normal {
+  font-size: 14px;
+  font-weight: 400; /* regular */
+  line-height: 18.2px;
+}
+
+.text-cus-normal-bold {
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 18.2px;
+}
+
+.text-cus-small {
+  font-size: 12px;
+  font-weight: 400; /* regular */
+  line-height: 15.6px;
+}
+
+.text-cus-small-bold {
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 15.6px;
+}

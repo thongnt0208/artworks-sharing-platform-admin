@@ -2,6 +2,8 @@ import { lazy, Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import DashboardLayout from 'src/layouts/dashboard';
+import ReportPage from 'src/pages/dashboard/report';
+import ModeratePage from 'src/pages/dashboard/moderate';
 
 import { LoadingScreen } from 'src/components/loading-screen';
 
@@ -11,8 +13,6 @@ import { LoadingScreen } from 'src/components/loading-screen';
 const IndexPage = lazy(() => import('src/pages/dashboard/app'));
 const OverviewEcommercePage = lazy(() => import('src/pages/dashboard/ecommerce'));
 const OverviewAnalyticsPage = lazy(() => import('src/pages/dashboard/analytics'));
-const OverviewBankingPage = lazy(() => import('src/pages/dashboard/banking'));
-const OverviewBookingPage = lazy(() => import('src/pages/dashboard/booking'));
 const OverviewFilePage = lazy(() => import('src/pages/dashboard/file'));
 // PRODUCT
 const ProductDetailsPage = lazy(() => import('src/pages/dashboard/product/details'));
@@ -39,23 +39,9 @@ const BlogPostsPage = lazy(() => import('src/pages/dashboard/post/list'));
 const BlogPostPage = lazy(() => import('src/pages/dashboard/post/details'));
 const BlogNewPostPage = lazy(() => import('src/pages/dashboard/post/new'));
 const BlogEditPostPage = lazy(() => import('src/pages/dashboard/post/edit'));
-// JOB
-const JobDetailsPage = lazy(() => import('src/pages/dashboard/job/details'));
-const JobListPage = lazy(() => import('src/pages/dashboard/job/list'));
-const JobCreatePage = lazy(() => import('src/pages/dashboard/job/new'));
-const JobEditPage = lazy(() => import('src/pages/dashboard/job/edit'));
-// TOUR
-const TourDetailsPage = lazy(() => import('src/pages/dashboard/tour/details'));
-const TourListPage = lazy(() => import('src/pages/dashboard/tour/list'));
-const TourCreatePage = lazy(() => import('src/pages/dashboard/tour/new'));
-const TourEditPage = lazy(() => import('src/pages/dashboard/tour/edit'));
-// FILE MANAGER
-const FileManagerPage = lazy(() => import('src/pages/dashboard/file-manager'));
 // APP
 const ChatPage = lazy(() => import('src/pages/dashboard/chat'));
 const MailPage = lazy(() => import('src/pages/dashboard/mail'));
-const CalendarPage = lazy(() => import('src/pages/dashboard/calendar'));
-const KanbanPage = lazy(() => import('src/pages/dashboard/kanban'));
 // TEST RENDER PAGE BY ROLE
 const PermissionDeniedPage = lazy(() => import('src/pages/dashboard/permission'));
 // BLANK PAGE
@@ -79,8 +65,6 @@ export const dashboardRoutes = [
       { element: <IndexPage />, index: true },
       { path: 'ecommerce', element: <OverviewEcommercePage /> },
       { path: 'analytics', element: <OverviewAnalyticsPage /> },
-      { path: 'banking', element: <OverviewBankingPage /> },
-      { path: 'booking', element: <OverviewBookingPage /> },
       { path: 'file', element: <OverviewFilePage /> },
       {
         path: 'user',
@@ -131,32 +115,12 @@ export const dashboardRoutes = [
           { path: ':title/edit', element: <BlogEditPostPage /> },
           { path: 'new', element: <BlogNewPostPage /> },
         ],
-      },
-      {
-        path: 'job',
-        children: [
-          { element: <JobListPage />, index: true },
-          { path: 'list', element: <JobListPage /> },
-          { path: ':id', element: <JobDetailsPage /> },
-          { path: 'new', element: <JobCreatePage /> },
-          { path: ':id/edit', element: <JobEditPage /> },
-        ],
-      },
-      {
-        path: 'tour',
-        children: [
-          { element: <TourListPage />, index: true },
-          { path: 'list', element: <TourListPage /> },
-          { path: ':id', element: <TourDetailsPage /> },
-          { path: 'new', element: <TourCreatePage /> },
-          { path: ':id/edit', element: <TourEditPage /> },
-        ],
-      },
-      { path: 'file-manager', element: <FileManagerPage /> },
+      },      
       { path: 'mail', element: <MailPage /> },
       { path: 'chat', element: <ChatPage /> },
-      { path: 'calendar', element: <CalendarPage /> },
-      { path: 'kanban', element: <KanbanPage /> },
+      { path: 'moderate', element: <ModeratePage /> },
+      { path: 'report', element: <ReportPage /> },
+      
       { path: 'permission', element: <PermissionDeniedPage /> },
       { path: 'blank', element: <BlankPage /> },
     ],
