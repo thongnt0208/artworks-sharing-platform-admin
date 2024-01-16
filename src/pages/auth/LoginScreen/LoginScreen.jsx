@@ -40,21 +40,31 @@ const LoginScreen = ({ isLogin, setIsLogin, setAuthInfoChanged }) => {
 
         let currentUserData = { id, email, fullname, accessToken, refreshToken, role, aTExp: exp };
 
-        setAuthInfo(currentUserData); //set Auth info to LocalStorage
-        setAuthInfoChanged(currentUserData); //notify to state at App.tsx that the user has logged in
-        setIsLogin(!!id); // Assuming login is considered valid if 'id' exists
-        setIsLoading(false);
         console.log({ ...currentUserData });
+        if (["ADMIN", "MODERATOR"].some((role) => role === role.toUpperCase())) {
+          setAuthInfo(currentUserData); //set Auth info to LocalStorage
+          setAuthInfoChanged(currentUserData); //notify to state at App.tsx that the user has logged in
+          setIsLogin(!!id); // Assuming login is considered valid if 'id' exists
+          setIsLoading(false);
 
-        toast.current.show({
-          severity: "success",
-          summary: "Đăng nhập thành công",
-          detail: "Bạn sẽ được chuyển hướng trong 3 giây ...",
-          life: 3000,
-        });
-        setTimeout(() => {
-          navigate(previousPath || "/");
-        }, 3000);
+          toast.current.show({
+            severity: "success",
+            summary: "Đăng nhập thành công",
+            detail: "Bạn sẽ được chuyển hướng trong 3 giây ...",
+            life: 3000,
+          });
+          setTimeout(() => {
+            navigate(previousPath || "/");
+          }, 3000);
+        } else {
+          setIsLoading(false);
+          toast.current.show({
+            severity: "error",
+            summary: "Không thể truy cập",
+            detail: "Bạn không có quyền truy cập vào trang này.",
+            life: 3000,
+          });
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -105,6 +115,11 @@ const LoginScreen = ({ isLogin, setIsLogin, setAuthInfoChanged }) => {
                 value={password}
                 placeholder="Mật khẩu"
                 onChange={(e) => setPassword(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleLogin();
+                  }
+                }}
                 required
               />
             </div>

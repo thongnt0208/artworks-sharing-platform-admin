@@ -10,6 +10,8 @@ import LoginScreen from 'src/pages/auth/LoginScreen/LoginScreen';
 
 // -------------------------------
 
+import RequireAuth from 'src/auth/guard/RequireAuth';
+
 // import { PATH_AFTER_LOGIN } from 'src/config-global';
 import { mainRoutes } from './main';
 import { dashboardRoutes } from './dashboard';
@@ -18,11 +20,11 @@ import { componentsRoutes } from './components';
 // ----------------------------------------------------------------------
 
 export default function Router() {
-  
+
   const [authInfo, setAuthInfo] = useState(getAuthInfo());
   console.log(authInfo);
   const [isLogin, setIsLogin] = useState(!!authInfo?.id);
-  
+
   return useRoutes([
     // SET INDEX PAGE WITH SKIP HOME PAGE
     {
@@ -46,6 +48,16 @@ export default function Router() {
     // ...authRoutes,
     // ...authDemoRoutes,
     {
+      path: "/",
+      element: <RequireAuth />,
+      children: [
+        // Routes that need authentication
+        // Dashboard routes
+        ...dashboardRoutes,
+
+      ],
+    },
+    {
       path: "/login",
       element: (
         <LoginScreen
@@ -55,14 +67,8 @@ export default function Router() {
         />
       ),
     },
-
-
-    // Dashboard routes
-    ...dashboardRoutes,
-
     // Main routes
     ...mainRoutes,
-
     // Components routes
     ...componentsRoutes,
 
