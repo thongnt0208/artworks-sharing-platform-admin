@@ -1,4 +1,14 @@
+import { useState } from 'react';
 import { Navigate, useRoutes } from 'react-router-dom';
+
+// -------------------------------
+
+import { getAuthInfo } from 'src/utils/AuthUtil';
+// -------------------------------
+
+import LoginScreen from 'src/pages/auth/LoginScreen/LoginScreen';
+
+// -------------------------------
 
 // import { PATH_AFTER_LOGIN } from 'src/config-global';
 import { mainRoutes } from './main';
@@ -8,6 +18,11 @@ import { componentsRoutes } from './components';
 // ----------------------------------------------------------------------
 
 export default function Router() {
+  
+  const [authInfo, setAuthInfo] = useState(getAuthInfo());
+  console.log(authInfo);
+  const [isLogin, setIsLogin] = useState(!!authInfo?.id);
+  
   return useRoutes([
     // SET INDEX PAGE WITH SKIP HOME PAGE
     {
@@ -30,6 +45,17 @@ export default function Router() {
     // Auth routes
     // ...authRoutes,
     // ...authDemoRoutes,
+    {
+      path: "/login",
+      element: (
+        <LoginScreen
+          isLogin={isLogin}
+          setIsLogin={setIsLogin}
+          setAuthInfoChanged={setAuthInfo}
+        />
+      ),
+    },
+
 
     // Dashboard routes
     ...dashboardRoutes,
