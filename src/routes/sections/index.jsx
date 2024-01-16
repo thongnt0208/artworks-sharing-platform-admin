@@ -1,9 +1,7 @@
 import { Navigate, useRoutes } from 'react-router-dom';
 
 // import { PATH_AFTER_LOGIN } from 'src/config-global';
-import { authRoutes } from './auth';
 import { mainRoutes } from './main';
-import { authDemoRoutes } from './auth-demo';
 import { dashboardRoutes } from './dashboard';
 import { componentsRoutes } from './components';
 
@@ -30,8 +28,8 @@ export default function Router() {
     // },
 
     // Auth routes
-    ...authRoutes,
-    ...authDemoRoutes,
+    // ...authRoutes,
+    // ...authDemoRoutes,
 
     // Dashboard routes
     ...dashboardRoutes,
