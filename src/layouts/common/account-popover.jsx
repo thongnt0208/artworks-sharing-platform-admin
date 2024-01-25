@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { m } from 'framer-motion';
+import { useNavigate } from "react-router-dom";
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -8,11 +10,14 @@ import { alpha } from '@mui/material/styles';
 import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 
 import { useMockedUser } from 'src/hooks/use-mocked-user';
+
+import { getAuthInfo, removeAuthInfo } from 'src/utils/AuthUtil';
 
 import { useAuthContext } from 'src/auth/hooks';
 
@@ -50,15 +55,20 @@ export default function AccountPopover() {
 
   const popover = usePopover();
 
-  const handleLogout = async () => {
-    try {
-      await logout();
-      popover.onClose();
-      router.replace('/');
-    } catch (error) {
-      console.error(error);
-      enqueueSnackbar('Unable to logout!', { variant: 'error' });
-    }
+  const navigate = useNavigate();
+  
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLogoutBtn = () => {
+    const accessToken = getAuthInfo()?.accessToken;
+    setIsLoading(true);
+    logout(accessToken).catch((err) => console.log("Logout ERRR", err));
+    setTimeout(() => {
+      // setIsLogin(false);
+      setIsLoading(false);
+      removeAuthInfo();
+      navigate("/login");
+    }, 1500);
   };
 
   const handleClickItem = (path) => {
@@ -120,12 +130,13 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <MenuItem
-          onClick={handleLogout}
+        <LoadingButton
+          onClick={handleLogoutBtn}
+          loading={isLoading}
           sx={{ m: 1, fontWeight: 'fontWeightBold', color: 'error.main' }}
         >
           Logout
-        </MenuItem>
+        </LoadingButton>
       </CustomPopover>
     </>
   );
