@@ -11,9 +11,9 @@ import { LoadingScreen } from 'src/components/loading-screen';
 
 // OVERVIEW
 const IndexPage = lazy(() => import('src/pages/dashboard/app'));
-const OverviewEcommercePage = lazy(() => import('src/pages/dashboard/ecommerce'));
+// const OverviewEcommercePage = lazy(() => import('src/pages/dashboard/ecommerce'));
 const OverviewAnalyticsPage = lazy(() => import('src/pages/dashboard/analytics'));
-const OverviewFilePage = lazy(() => import('src/pages/dashboard/file'));
+// const OverviewFilePage = lazy(() => import('src/pages/dashboard/file'));
 // PRODUCT
 const ProductDetailsPage = lazy(() => import('src/pages/dashboard/product/details'));
 const ProductListPage = lazy(() => import('src/pages/dashboard/product/list'));
@@ -63,9 +63,9 @@ export const dashboardRoutes = [
     ),
     children: [
       { element: <IndexPage />, index: true },
-      { path: 'ecommerce', element: <OverviewEcommercePage /> },
+      // { path: 'ecommerce', element: <OverviewEcommercePage /> },
       { path: 'analytics', element: <OverviewAnalyticsPage /> },
-      { path: 'file', element: <OverviewFilePage /> },
+      // { path: 'file', element: <OverviewFilePage /> },
       {
         path: 'user',
         children: [
@@ -115,12 +115,12 @@ export const dashboardRoutes = [
           { path: ':title/edit', element: <BlogEditPostPage /> },
           { path: 'new', element: <BlogNewPostPage /> },
         ],
-      },      
+      },
       { path: 'mail', element: <MailPage /> },
       { path: 'chat', element: <ChatPage /> },
       { path: 'moderate', element: <ModeratePage /> },
       { path: 'report', element: <ReportPage /> },
-      
+
       { path: 'permission', element: <PermissionDeniedPage /> },
       { path: 'blank', element: <BlankPage /> },
     ],

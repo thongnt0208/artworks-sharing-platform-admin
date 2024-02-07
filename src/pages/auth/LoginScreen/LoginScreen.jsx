@@ -1,7 +1,7 @@
 /* eslint-disable */
 // ----------------------------------------------------------------------
 
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./LoginScreen.scss";
 
@@ -14,7 +14,10 @@ import logotext from "../../../assets/logo/logo.png";
 import { jwtDecode } from "jwt-decode";
 import { setAuthInfo } from "../../../utils/AuthUtil";
 
+import { AuthContext } from "../../../auth/context/jwt/auth-provider";
+
 const LoginScreen = ({ isLogin, setIsLogin, setAuthInfoChanged }) => {
+  const authContext = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -41,11 +44,12 @@ const LoginScreen = ({ isLogin, setIsLogin, setAuthInfoChanged }) => {
         let currentUserData = { id, email, fullname, accessToken, refreshToken, role, aTExp: exp };
 
         console.log({ ...currentUserData });
-        if (["ADMIN", "MODERATOR"].some((role) => role === role.toUpperCase())) {
+        if (["ADMIN", "MODERATOR"].some((role) => role === currentUserData.role.toUpperCase())) {
           setAuthInfo(currentUserData); //set Auth info to LocalStorage
           setAuthInfoChanged(currentUserData); //notify to state at App.tsx that the user has logged in
           setIsLogin(!!id); // Assuming login is considered valid if 'id' exists
           setIsLoading(false);
+          authContext.setAuthInfo(currentUserData); //set Auth info to Context
 
           toast.current.show({
             severity: "success",
