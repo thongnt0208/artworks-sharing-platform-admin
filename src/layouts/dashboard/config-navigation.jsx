@@ -11,8 +11,7 @@ export function useNavData() {
   console.log(authContext);
   const { t } = useTranslate();
 
-  const commonData = useMemo(() => {
-    return [
+  const commonData = useMemo(() => [
       // OVERVIEW
       {
         subheader: t('overview'),
@@ -21,16 +20,10 @@ export function useNavData() {
             title: t('home'),
             path: paths.dashboard.root,
             icon: ICONS.dashboard,
-          },
-          {
-            title: t('analytics'),
-            path: paths.dashboard.general.analytics,
-            icon: ICONS.analytics,
-          },
+          }
         ],
       },
-    ];
-  }, [t]);
+    ], [t]);
 
   const adminData = useMemo(() => {
     const adminSpecific = [
