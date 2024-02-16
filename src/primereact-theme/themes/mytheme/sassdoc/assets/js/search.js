@@ -1,3 +1,4 @@
+/* eslint-disable*/
 (function ($, global) {
 
   var Search = function (conf) {

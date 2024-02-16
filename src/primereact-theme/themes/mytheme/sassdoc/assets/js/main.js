@@ -1,3 +1,4 @@
+/* eslint-disable*/
 /* global document */
 
 (function ($, global) {

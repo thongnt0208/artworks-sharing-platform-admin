@@ -1,7 +1,10 @@
 import { useMemo, useContext } from 'react';
+
 import { paths } from 'src/routes/paths';
+
 import { useTranslate } from 'src/locales';
 import { AuthContext } from 'src/auth/context/jwt/auth-provider';
+
 import { ICONS } from './icon';
 
 // ----------------------------------------------------------------------
