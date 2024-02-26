@@ -19,6 +19,9 @@ out
 dist
 build
 /build
+/.firebase
+firebase-debug.log
+errors.txt
 
 # environment variables
 .env

@@ -22,7 +22,6 @@ import { getAuthInfo, removeAuthInfo } from 'src/utils/AuthUtil';
 import { useAuthContext } from 'src/auth/hooks';
 
 import { varHover } from 'src/components/animate';
-import { useSnackbar } from 'src/components/snackbar';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 
 // ----------------------------------------------------------------------
@@ -51,7 +50,6 @@ export default function AccountPopover() {
 
   const { logout } = useAuthContext();
 
-  const { enqueueSnackbar } = useSnackbar();
 
   const popover = usePopover();
 

@@ -46,7 +46,7 @@
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "firebase": "^10.4.0",
+    "firebase": "^10.8.0",
     "formik": "^2.4.5",
     "framer-motion": "^10.16.4",
     "highlight.js": "^11.8.0",

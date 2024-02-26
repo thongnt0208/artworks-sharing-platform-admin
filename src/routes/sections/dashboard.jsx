@@ -12,7 +12,7 @@ import { LoadingScreen } from 'src/components/loading-screen';
 // OVERVIEW
 const IndexPage = lazy(() => import('src/pages/dashboard/app'));
 // const OverviewEcommercePage = lazy(() => import('src/pages/dashboard/ecommerce'));
-const OverviewAnalyticsPage = lazy(() => import('src/pages/dashboard/analytics'));
+// const OverviewAnalyticsPage = lazy(() => import('src/pages/dashboard/analytics'));
 // const OverviewFilePage = lazy(() => import('src/pages/dashboard/file'));
 // PRODUCT
 const ProductDetailsPage = lazy(() => import('src/pages/dashboard/product/details'));
