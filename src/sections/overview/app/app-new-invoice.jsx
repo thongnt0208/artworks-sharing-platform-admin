@@ -50,7 +50,7 @@ export default function AppNewInvoice({ title, subheader, tableData, tableLabels
           color="inherit"
           endIcon={<Iconify icon="eva:arrow-ios-forward-fill" width={18} sx={{ ml: -0.5 }} />}
         >
-          View All
+          Xem tất cả
         </Button>
       </Box>
     </Card>
@@ -126,24 +126,24 @@ function AppNewInvoiceRow({ row }) {
       >
         <MenuItem onClick={handleDownload}>
           <Iconify icon="eva:cloud-download-fill" />
-          Download
+          Tải xuống
         </MenuItem>
 
         <MenuItem onClick={handlePrint}>
           <Iconify icon="solar:printer-minimalistic-bold" />
-          Print
+          In ra
         </MenuItem>
 
         <MenuItem onClick={handleShare}>
           <Iconify icon="solar:share-bold" />
-          Share
+          Chia sẻ
         </MenuItem>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
           <Iconify icon="solar:trash-bin-trash-bold" />
-          Delete
+          Xoá
         </MenuItem>
       </CustomPopover>
     </>
