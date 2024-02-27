@@ -1,0 +1,13 @@
+.active-tab {
+  background-color: #e0e0e0;
+  border-bottom: 2px solid #333;
+  color: #000;
+}
+
+.inactive-tab {
+  color: #666;
+}
+
+.inactive-tab:hover {
+  background-color: #f0f0f0;
+}
