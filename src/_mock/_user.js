@@ -9,6 +9,28 @@ export const USER_STATUS_OPTIONS = [
   { value: 'deleted', label: 'Bị xoá' },
 ];
 
+export const getSeverity = (status) => {
+  switch (status) {
+    case 'unqualified':
+      return 'danger';
+
+    case 'qualified':
+    case 'Admin':
+      return 'success';
+
+    case 'new':
+    case 'CommonUser':
+      return 'info';
+
+    case 'negotiation':
+    case 'Moderator':
+      return 'warning';
+
+    default:
+      return null;
+  }
+};
+
 export const _userAbout = {
   id: _mock.id(1),
   role: _mock.role(1),

@@ -3,6 +3,7 @@
 import { Tag } from 'primereact/tag';
 import { Menu } from 'primereact/menu';
 import { Badge } from 'primereact/badge';
+import { Toast } from 'primereact/toast';
 import { Column } from 'primereact/column';
 import { useNavigate } from "react-router-dom";
 import { DataTable } from 'primereact/datatable';
@@ -10,6 +11,7 @@ import { InputText } from 'primereact/inputtext';
 import { useRef, useState, useEffect } from 'react';
 import { TabView, TabPanel } from 'primereact/tabview';
 import { Button as ButtonPr } from 'primereact/button';
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
@@ -18,16 +20,21 @@ import Container from '@mui/material/Container';
 import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
 
+import { fDateTime } from 'src/utils/format-time';
+
+import { getSeverity } from 'src/_mock';
+
 import Iconify from 'src/components/iconify';
 import { useSettingsContext } from 'src/components/settings';
 
 // eslint-disable-next-line import/no-unresolved
 import './user-list-view.scss';
-import { getAccountsList, getDeletedAccountsList } from './user-list-service';
+import { deleteAccount, getAccountsList, getDeletedAccountsList } from './user-list-service';
 
 // ----------------------------------------------------------------------
 
 export default function UserListView() {
+  const toast = useRef(null);
   const settings = useSettingsContext();
 
   const navigate = useNavigate();
@@ -39,41 +46,8 @@ export default function UserListView() {
   const [tableData, setTableData] = useState([]);
   const [showingData, setShowingData] = useState([]);
   const [deletedTableData, setDeletedTableData] = useState([]);
-
-  const getSeverity = (status) => {
-    switch (status) {
-      case 'unqualified':
-        return 'danger';
-
-      case 'qualified':
-      case 'Admin':
-        return 'success';
-
-      case 'new':
-      case 'CommonUser':
-        return 'info';
-
-      case 'negotiation':
-      case 'Moderator':
-        return 'warning';
-
-      default:
-        return null;
-    }
-  };
-
-  const actionItems = [
-    {
-      label: 'Update',
-      icon: 'pi pi-refresh',
-      command: () => { }
-    },
-    {
-      label: 'Delete',
-      icon: 'pi pi-trash',
-      command: () => { }
-    }
-  ];
+  const [selectedAccountId, setSelectedAccountId] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const tabHeaderTemplate = (options, tab, index) => (
     <div
@@ -89,7 +63,6 @@ export default function UserListView() {
       tabIndex={0}
     >
       <span className="font-bold white-space-nowrap">{tab.label}</span>
-
       <Badge value={
         (tab.value === "active" && tableData.length) ||
         (tab.value === "deleted" && deletedTableData.length)
@@ -99,83 +72,117 @@ export default function UserListView() {
 
   const renderHeader = () => (
     <div className="flex flex-wrap gap-2 justify-content-between align-items-center">
-      <h4 className="m-0">Accounts</h4>
+      <h3 className="m-0">Các tài khoản có trên hệ thống</h3>
       <span className="p-input-icon-left">
         <i className="pi pi-search" />
-        <InputText value={() => { }} onChange={() => { }} placeholder="Keyword Search" />
+        <InputText value={() => { }} onChange={() => { }} placeholder="Tìm kiếm" />
       </span>
     </div>
   );
 
   const statusBodyTemplate = (rowData) => <Tag value={rowData.status} severity={getSeverity(rowData.status)} />;
   const roleBodyTemplate = (rowData) => <Tag value={rowData.role} severity={getSeverity(rowData.role)} />;
-  const actionBodyTemplate = () => <>
+  const actionBodyTemplate = (rowData) => <>
     <Menu model={actionItems} popup ref={menuRef} id="popup_menu" />
-    <ButtonPr icon="pi pi-cog" className="mr-2" onClick={(event) => menuRef.current.toggle(event)} aria-controls="popup_menu" aria-haspopup />
+    <ButtonPr disabled={loading} loading={loading} icon="pi pi-cog" className="mr-2" onClick={(event) => { menuRef.current.toggle(event); setSelectedAccountId(rowData.id); }} aria-controls="popup_menu" aria-haspopup />
   </>;
 
-  const getTableData = () => {
+  const handleUnauthError = (error) => {
+    console.log(error.response.status);
+    setLoading(false);
+    toast.current.show({ severity: 'error', summary: 'Chưa xoá', detail: 'Đã xảy ra lỗi, vui lòng thử lại.', life: 3000 });
+    if (error.response.status === 401) {
+      toast.current.show({ severity: 'error', summary: 'Phiên đăng nhập hết hạn', detail: 'Bạn đang được chuyển sang trang đăng nhập ...', life: 3000 });
+      setTimeout(() => {
+        navigate('/login')
+      }, 2500);
+    }
+  }
+
+  const refreshTableData = () => {
+    setLoading(true);
     getAccountsList()
       .then((accounts) => {
-        console.log(accounts);
+        setLoading(false);
         setTableData(accounts);
         setShowingData(accounts);
       })
-      .catch((error) => {
-        console.error('Error fetching accounts list', error);
-        console.log(error.response.status);
-        if (error.response.status === 401) {
-          console.log('Unauthorized');
-          navigate('/login')
-        }
-      });
+      .catch((error) => handleUnauthError(error));
 
     getDeletedAccountsList()
       .then((accounts) => {
-        console.log(accounts);
         setDeletedTableData(accounts);
       })
   }
 
+  const actionItems = [
+    {
+      label: currentTab === 0 ? 'Xoá' : 'Khôi phục',
+      icon: currentTab === 0 ? 'pi pi-trash' : 'pi pi-refresh',
+      command: currentTab === 0 ? (() => deleteAnAccount(selectedAccountId)) : (() => { }),
+    }
+  ];
+
+  const deleteAnAccount = (id) => {
+    if (selectedAccountId !== null) {
+      if (window.confirm('Bạn có chắc chắn muốn xóa tài khoản này?')) {
+        setLoading(true);
+        deleteAccount(id)
+          .then(() => {
+            setLoading(false);
+            refreshTableData();
+            toast.current.show({ severity: 'success', summary: 'Đã xoá', detail: 'Tài khoản đã bị xoá', life: 3000 });
+          })
+          .catch((error) => handleUnauthError(error))
+      }
+    }
+  }
+
   useEffect(() => {
-    getTableData();
+    refreshTableData();
   }, [])
 
   useEffect(() => {
-    if (currentTab === 1) { // Assuming "deleted" tab is at index 2
+    if (currentTab === 1) {
       setShowingData(deletedTableData);
     } else {
-      getTableData();
+      refreshTableData();
     }
-
   }, [currentTab]);
 
   return (
     <>
+      <Toast ref={toast} />
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <Card>
           <TabView activeIndex={currentTab} onTabChange={(e) => setCurrentTab(e.index)}>
             <TabPanel headerTemplate={(options) => tabHeaderTemplate(options, { label: 'Active', value: 'active' }, 0)} headerClassName="flex align-items-center">
-              <DataTable value={showingData} header={() => renderHeader()} >
-                <Column field="fullname" header="Full Name" sortable style={{ minWidth: '14rem' }} />
+              <DataTable value={showingData} header={() => renderHeader()} headerStyle={{borderRadius: "12px"}} columnResizeMode="expand" resizableColumns showGridlines>
+                {loading && <ProgressSpinner />}
+                <Column field="fullname" header="Tên đầy đủ" sortable style={{ minWidth: '14rem' }} />
                 <Column field="username" header="Username" sortable style={{ minWidth: '14rem' }} />
                 <Column field="email" header="Email" sortable style={{ minWidth: '14rem' }} />
-                <Column field="role" header="Role" sortable style={{ minWidth: '14rem' }} body={roleBodyTemplate} />
-                <Column field="status" header="Status" sortable style={{ minWidth: '12rem' }} body={statusBodyTemplate} />
+                <Column field="role" header="Vai trò" sortable style={{ minWidth: '14rem' }} body={roleBodyTemplate} />
+                <Column field="status" header="Trạng thái" sortable style={{ minWidth: '12rem' }} body={statusBodyTemplate} />
+                <Column field="bio" header="Giới thiệu" style={{ minWidth: '12rem' }} />
+                <Column field="createdOn" header="Tạo lúc" style={{ minWidth: '12rem' }} body={(rowData) => fDateTime(rowData.createdOn, "dd/MM/yyyy HH:mm:ss")} />
                 <Column headerStyle={{ width: '5rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyTemplate} />
               </DataTable>
             </TabPanel>
             <TabPanel headerTemplate={(options) => tabHeaderTemplate(options, { label: 'Deleted', value: 'deleted' }, 1)} headerClassName="flex align-items-center">
               <DataTable value={deletedTableData} header={() => renderHeader()} >
-                <Column field="fullname" header="Full Name" sortable style={{ minWidth: '14rem' }} />
+                <Column field="fullname" header="Tên đầy đủ" sortable style={{ minWidth: '14rem' }} />
                 <Column field="username" header="Username" sortable style={{ minWidth: '14rem' }} />
                 <Column field="email" header="Email" sortable style={{ minWidth: '14rem' }} />
-                <Column field="role" header="Role" sortable style={{ minWidth: '14rem' }} body={roleBodyTemplate} />
-                <Column field="status" header="Status" sortable style={{ minWidth: '12rem' }} body={statusBodyTemplate} />
+                <Column field="role" header="Vai trò" sortable style={{ minWidth: '14rem' }} body={roleBodyTemplate} />
+                <Column field="status" header="Trạng thái" sortable style={{ minWidth: '12rem' }} body={statusBodyTemplate} />
+                <Column field="bio" header="Giới thiệu" style={{ minWidth: '12rem' }} />
+                <Column field="deletedOn" header="Xoá lúc" style={{ minWidth: '12rem' }} body={(rowData) => fDateTime(rowData.deletedOn, "dd/MM/yyyy HH:mm:ss")} />
                 <Column headerStyle={{ width: '5rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyTemplate} />
               </DataTable>
             </TabPanel>
             <TabPanel header={<Button
+              className='create-account-button'
               component={RouterLink}
               href={paths.dashboard.user.new}
               variant="contained"
@@ -187,7 +194,6 @@ export default function UserListView() {
           </TabView>
         </Card>
       </Container>
-      <div>End {currentTab}</div>
     </>
   );
 }

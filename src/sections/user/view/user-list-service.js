@@ -35,6 +35,18 @@ export async function getDeletedAccountsList() {
     
 }
 
+/**
+ * This function to delete an account by id
+ * 
+ * @param {*} id - The id of the account to be deleted
+ * @returns A promise that contains the result of the deletion
+ * @example
+ * deleteAccount('user1').then((result) => {
+ * console.log(result)
+ * }
+ * @author ThongNT
+ * @version 1.0.0
+ */
 export async function deleteAccount(id) {
   return axiosPrivate
     .delete(`/accounts/${id}`)
