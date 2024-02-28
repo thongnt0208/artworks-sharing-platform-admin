@@ -1,3 +1,6 @@
+/* variables */
+@import 'src\const\variables.css';
+
 /* scrollbar */
 @import 'simplebar-react/dist/simplebar.min.css';
 
@@ -83,4 +86,28 @@
   font-size: 12px;
   font-weight: bold;
   line-height: 15.6px;
+}
+
+/* Custom scroll bar*/
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--primary-200);
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: gray;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--strong-200);
 }
