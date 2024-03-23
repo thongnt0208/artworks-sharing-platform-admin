@@ -15,18 +15,18 @@ export function useNavData() {
   const { t } = useTranslate();
 
   const commonData = useMemo(() => [
-      // OVERVIEW
-      {
-        subheader: t('overview'),
-        items: [
-          {
-            title: t('home'),
-            path: paths.dashboard.root,
-            icon: ICONS.dashboard,
-          }
-        ],
-      },
-    ], [t]);
+    // OVERVIEW
+    {
+      subheader: t('overview'),
+      items: [
+        {
+          title: t('home'),
+          path: paths.dashboard.root,
+          icon: ICONS.dashboard,
+        }
+      ],
+    },
+  ], [t]);
 
   const adminData = useMemo(() => {
     const adminSpecific = [
@@ -42,6 +42,12 @@ export function useNavData() {
         path: paths.dashboard.user.list,
         icon: ICONS.user,
       },
+      // CATEGORY MANAGER
+      {
+        title: 'Thể loại',
+        path: paths.dashboard.category.root,
+        icon: ICONS.category,
+      },
       // INVOICE MANAGER
       {
         title: t('transaction'),
@@ -50,7 +56,7 @@ export function useNavData() {
       },
       // REPORT
       {
-        title: t('report'),
+        title: 'Báo cáo',
         path: paths.dashboard.report.root,
         icon: ICONS.reporter,
       },
@@ -71,6 +77,12 @@ export function useNavData() {
         title: t('moderate'),
         path: paths.dashboard.moderate.root,
         icon: ICONS.order,
+      },
+      // CATEGORY MANAGER
+      {
+        title: 'Thể loại',
+        path: paths.dashboard.category.root,
+        icon: ICONS.category,
       },
       // REPORT
       {

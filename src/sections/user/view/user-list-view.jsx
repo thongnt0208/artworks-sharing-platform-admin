@@ -43,7 +43,6 @@ export default function UserListView() {
 
   const [currentTab, setCurrentTab] = useState(0);
 
-  const [tableData, setTableData] = useState([]);
   const [showingData, setShowingData] = useState([]);
   const [deletedTableData, setDeletedTableData] = useState([]);
   const [selectedAccountId, setSelectedAccountId] = useState('');
@@ -64,7 +63,7 @@ export default function UserListView() {
     >
       <span className="font-bold white-space-nowrap">{tab.label}</span>
       <Badge value={
-        (tab.value === "active" && tableData.length) ||
+        (tab.value === "active" && showingData.length) ||
         (tab.value === "deleted" && deletedTableData.length)
       } />
     </div>
@@ -80,7 +79,7 @@ export default function UserListView() {
     </div>
   );
 
-  const statusBodyTemplate = (rowData) => <Tag value={rowData.status} severity={getSeverity(rowData.status)} />;
+  const statusBodyTemplate = (rowData) => <Tag value={rowData.deletedOn ? "Đã xóa" : "Hoạt động"} severity={rowData.deletedOn ? "" : "success"} />;
   const roleBodyTemplate = (rowData) => <Tag value={rowData.role} severity={getSeverity(rowData.role)} />;
   const actionBodyTemplate = (rowData) => <>
     <Menu model={actionItems} popup ref={menuRef} id="popup_menu" />
@@ -104,8 +103,7 @@ export default function UserListView() {
     getAccountsList()
       .then((accounts) => {
         setLoading(false);
-        setTableData(accounts);
-        setShowingData(accounts);
+        setShowingData(accounts?.items);
       })
       .catch((error) => handleUnauthError(error));
 

@@ -19,7 +19,7 @@ import { useMockedUser } from 'src/hooks/use-mocked-user';
 
 import { getAuthInfo, removeAuthInfo } from 'src/utils/AuthUtil';
 
-import { useAuthContext } from 'src/auth/hooks';
+import { logout } from 'src/pages/auth/AuthService';
 
 import { varHover } from 'src/components/animate';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
@@ -47,9 +47,6 @@ export default function AccountPopover() {
   const router = useRouter();
 
   const { user } = useMockedUser();
-
-  const { logout } = useAuthContext();
-
 
   const popover = usePopover();
 

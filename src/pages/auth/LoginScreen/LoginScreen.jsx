@@ -58,8 +58,8 @@ const LoginScreen = ({ isLogin, setIsLogin, setAuthInfoChanged }) => {
             life: 3000,
           });
           setTimeout(() => {
-            navigate(previousPath || "/");
-          }, 3000);
+            navigate("/");
+          }, 300);
         } else {
           setIsLoading(false);
           toast.current.show({

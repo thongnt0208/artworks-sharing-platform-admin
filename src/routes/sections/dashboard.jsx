@@ -4,6 +4,7 @@ import { Outlet } from 'react-router-dom';
 import DashboardLayout from 'src/layouts/dashboard';
 import ReportPage from 'src/pages/dashboard/report';
 import ModeratePage from 'src/pages/dashboard/moderate';
+import CategoryPage from 'src/pages/dashboard/category/list';
 
 import { LoadingScreen } from 'src/components/loading-screen';
 
@@ -120,6 +121,7 @@ export const dashboardRoutes = [
       { path: 'chat', element: <ChatPage /> },
       { path: 'moderate', element: <ModeratePage /> },
       { path: 'report', element: <ReportPage /> },
+      { path: 'category', element: <CategoryPage /> },
 
       { path: 'permission', element: <PermissionDeniedPage /> },
       { path: 'blank', element: <BlankPage /> },

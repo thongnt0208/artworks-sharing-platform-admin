@@ -39,4 +39,5 @@ export const ICONS = {
     dashboard: icon('ic_dashboard'),
     moderate: icon('ic_moderate'),
     reporter: icon('ic_report'),
+    category: icon('ic_category'),
   };
