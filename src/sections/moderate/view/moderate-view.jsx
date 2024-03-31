@@ -1,238 +1,66 @@
 /* eslint-disable */
 // ----------------------------------------------------------------------
 
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 
-import ModerateLeftNav from '../moderate-left-nav'
+import ModerateLeftNav from '../moderate-left-nav';
 import ModerateContent from '../moderate-content';
 import ModerateRightNav from '../moderate-right-nav';
+import { getArtworksData, updateArtworkState } from '../Service';
+import { set } from 'lodash';
 
 export default function ModerateView() {
-  const [selectingId, setSelectingId] = React.useState("");
-  const itemsList = [
-    {
-      id: "123",
-      avatar: "https://picsum.photos/200",
-      text: "This is a messrrwrrrrrr wrrrrrr rwwfffffff",
-      author: "Author",
-      time: "12:00",
-      isSeen: false,
-    },
-    {
-      id: "1v24",
-      avatar: "https://picsum.photos/400",
-      text: "This is ue porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
-      author: "Author 2",
-      time: "13:00",
-      isSeen: false,
-    },
-    {
-      id: "12df6",
-      avatar: "https://picsum.photos/400",
-      text: "Ddolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
-      author: "Author 3",
-      time: "13:00",
-      isSeen: false,
-    },
-    {
-      id: "12cd6",
-      avatar: "https://picsum.photos/400",
-      text: "Ddolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
-      author: "Author 3",
-      time: "13:00",
-      isSeen: false,
-    },
-    {
-      id: "12zzxc6",
-      avatar: "https://picsum.photos/400",
-      text: "Ddolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
-      author: "Author 3",
-      time: "13:00",
-      isSeen: false,
-    },
-    {
-      id: "1ss26",
-      avatar: "https://picsum.photos/400",
-      text: "Ddolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
-      author: "Author 3",
-      time: "13:00",
-      isSeen: false,
-    },
-    {
-      id: "12re6",
-      avatar: "https://picsum.photos/400",
-      text: "Ddolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
-      author: "Author 3",
-      time: "13:00",
-      isSeen: false,
-    },
-    {
-      id: "1c26",
-      avatar: "https://picsum.photos/400",
-      text: "Ddolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
-      author: "Author 3",
-      time: "13:00",
-      isSeen: false,
-    },
-    {
-      id: "1w26",
-      avatar: "https://picsum.photos/400",
-      text: "Ddolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
-      author: "Author 3",
-      time: "13:00",
-      isSeen: false,
-    },
-    {
-      id: "12e6",
-      avatar: "https://picsum.photos/400",
-      text: "Ddolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
-      author: "Author 3",
-      time: "13:00",
-      isSeen: false,
-    },
-    {
-      id: "12a",
-      avatar: "https://picsum.photos/400",
-      text: "Ddolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
-      author: "Author 3",
-      time: "13:00",
-      isSeen: false,
-    },
-    {
-      id: "12a",
-      avatar: "https://picsum.photos/400",
-      text: "Ddolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
-      author: "Author 3",
-      time: "13:00",
-      isSeen: false,
-    },
-    {
-      id: "12a",
-      avatar: "https://picsum.photos/400",
-      text: "Ddolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
-      author: "Author 3",
-      time: "13:00",
-      isSeen: false,
-    },
-    {
-      id: "12a",
-      avatar: "https://picsum.photos/400",
-      text: "Ddolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
-      author: "Author 3",
-      time: "13:00",
-      isSeen: false,
-    },
-    {
-      id: "12a",
-      avatar: "https://picsum.photos/400",
-      text: "Ddolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
-      author: "Author 3",
-      time: "13:00",
-      isSeen: false,
-    },
-    {
-      id: "12a",
-      avatar: "https://picsum.photos/400",
-      text: "Ddolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
-      author: "Author 3",
-      time: "13:00",
-      isSeen: false,
-    },
-    {
-      id: "12a",
-      avatar: "https://picsum.photos/400",
-      text: "Ddolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
-      author: "Author 3",
-      time: "13:00",
-      isSeen: false,
-    },
-    {
-      id: "12a",
-      avatar: "https://picsum.photos/400",
-      text: "Ddolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
-      author: "Author 3",
-      time: "13:00",
-      isSeen: false,
-    },
-    {
-      id: "12a",
-      avatar: "https://picsum.photos/400",
-      text: "Ddolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
-      author: "Author 3",
-      time: "13:00",
-      isSeen: false,
-    },
-    {
-      id: "12a",
-      avatar: "https://picsum.photos/400",
-      text: "Ddolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
-      author: "Author 3",
-      time: "13:00",
-      isSeen: false,
-    },
-    {
-      id: "12a",
-      avatar: "https://picsum.photos/400",
-      text: "Ddolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
-      author: "Author 3",
-      time: "13:00",
-      isSeen: false,
-    },
-    {
-      id: "12a",
-      avatar: "https://picsum.photos/400",
-      text: "Ddolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
-      author: "Author 3",
-      time: "13:00",
-      isSeen: false,
-    },
-    {
-      id: "12a",
-      avatar: "https://picsum.photos/400",
-      text: "Ddolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
-      author: "Author 3",
-      time: "13:00",
-      isSeen: false,
-    },
-    {
-      id: "12a",
-      avatar: "https://picsum.photos/400",
-      text: "Ddolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
-      author: "Author 3",
-      time: "13:00",
-      isSeen: false,
-    },
-    {
-      id: "12a",
-      avatar: "https://picsum.photos/400",
-      text: "Ddolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
-      author: "Author 3",
-      time: "13:00",
-      isSeen: false,
-    },
-  ]
+  const [refresh, setRefresh] = React.useState(false);
+  const [selectingId, setSelectingId] = React.useState('');
+  const [accountId, setAccountId] = React.useState('');
+  const [artworks, setArtworks] = React.useState([]);
+  const [account, setAccount] = React.useState({});
+  const [pageNumber, setPageNumber] = React.useState(1);
+
+  const handleModerateCallback = (note) => {
+    if (selectingId === '') return;
+    // Call API to update artwork state
+    const response = updateArtworkState(selectingId, 1, note);
+    if (response) {
+      setRefresh(true);
+    }
+  }
 
   useEffect(() => {
-    // Fetch the items list from API
-    setSelectingId(itemsList[0]?.id);
-  }, [])
+    const artworks = getArtworksData(pageNumber, 10);
+    artworks.then((data) => {
+      const updatedArtworks = data.map((artwork) => ({ ...artwork, isSeen: false }));
+      setArtworks(updatedArtworks);
+      if (selectingId === '' || accountId === '' || account === null) {
+        setSelectingId(updatedArtworks[0]?.id);
+        setAccountId(updatedArtworks[0]?.account.id);
+        setAccount(updatedArtworks[0]?.account);
+      }
+    });
+    setRefresh(false);
+  }, [refresh]);
 
   useEffect(() => {
-    console.log(selectingId);
-  }, [selectingId])
+    const currentAccount = artworks.find((artwork) => artwork.id === selectingId)?.account;
+    setAccount(currentAccount);
+  }, [accountId]);
 
   return (
-    <div className='grid' style={{ maxHeight: "80vh" }}>
+    <div className="grid" style={{ maxHeight: '80vh', padding: '20px 0' }}>
       <div className="col-3 max-h-full">
-        <ModerateLeftNav itemsList={itemsList} selectingId={selectingId} setSelectingId={setSelectingId} />
+        <ModerateLeftNav
+          itemsList={artworks}
+          selectingId={selectingId}
+          setSelectingId={setSelectingId}
+          setAccountId={setAccountId}
+        />
       </div>
-      <div className="col-6">
-        <ModerateContent className="col-6" />
+      <div className="col-6 max-h-full">
+        <ModerateContent selectingId={selectingId  || ""} className="col-6" />
       </div>
-      <div className="col-3">
-        <ModerateRightNav className="col-3" />
+      <div className="col-3 max-h-full">
+        <ModerateRightNav account={account || {}} handleModerateCallback={handleModerateCallback} className="col-3" />
       </div>
-
     </div>
-  )
+  );
 }
