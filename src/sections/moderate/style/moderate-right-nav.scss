@@ -1,0 +1,62 @@
+@import '/src/const/variables.scss';
+
+.container {
+  .account-info-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid $gray-default;
+    .avatar-image {
+      width: 113px;
+      height: 113px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .fullname {
+      color: $strong-200;
+      margin: 15px 0 5px 0;
+    }
+    .email {
+      margin: 5px 0 20px 0;
+    }
+  }
+
+  .download-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid $gray-default;
+    .download-btn {
+      margin-bottom: 20px;
+    }
+  }
+
+  .btn-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    .btn {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
+}
+.note-dialog {
+  .dialog-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    .dialog-textarea {
+      margin-bottom: 20px;
+    }
+  }
+}

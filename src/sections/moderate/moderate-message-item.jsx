@@ -6,9 +6,9 @@ import React from 'react'
 import './style/moderate-message-item.scss'
 import { Avatar } from 'primereact/avatar';
 
-export default function MessageItemTemplate(props, context) {
-  const { item, selectingId, setSelectingId } = props;
-  const { id, avatar, text, author, time, isSeen } = item;
+export default function MessageItemTemplate(props) {
+  const { item, selectingId, setSelectingId, setAccountId } = props;
+  const { id, account, title, description, createdOn, isSeen } = item;
   const [isSeenLocal, setIsSeenLocal] = React.useState(isSeen);
   const flexAddition = 'flex gap-3 align-items-center'
   const messageItemClass = selectingId !== id ? `message-item ${flexAddition}` : `message-item message-item-selecting ${flexAddition}`;
@@ -26,6 +26,7 @@ export default function MessageItemTemplate(props, context) {
     // Call a function that call API to setIsSeen to false
     // setIsSeenLocal(true)
     setSelectingId(id);
+    setAccountId(account.id);
     setIsSeenLocal(true)
   }
 
@@ -33,22 +34,21 @@ export default function MessageItemTemplate(props, context) {
   return (
     <div className={messageItemClass} onClick={itemClickHandler}>
       <div className="message-item-avatar flex">
-        <Avatar image={avatar} size="large" shape="circle" />
+        <Avatar image={account.avatar} size="large" shape="circle" />
       </div>
       <div className="message-item-content">
         <div className="message-item-header">
-          <div className="message-item-author text-cus-normal-bold">
-            {author}
+          <div className="message-item-author text-cus-normal-bold text-limit">
+          <strong style={{color: "#00668C"}}>{account.fullname}</strong>
           </div>
-
         </div>
         <div className={!isSeenLocal ? 'message-item-text text-cus-normal-bold text-limit' : 'message-item-text text-cus-normal text-limit'}>
-          {text}
+        <strong className='text-limit'>{title}</strong> · {description}
         </div>
       </div>
       <div className="message-status-content">
         <div className="message-item-time text-cus-small">
-          {time}
+          {createdOn}
         </div>
         {!isSeenLocal && <div className="message-item-seen" />}
       </div>
