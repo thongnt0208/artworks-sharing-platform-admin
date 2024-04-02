@@ -2,14 +2,33 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'primereact/button';
 
-import { Dialog } from '@mui/material';
+import { Radio, Dialog, TextField, RadioGroup, FormControl, FormControlLabel } from '@mui/material';
+
+import AssetsCard from 'src/components/card/asset-card';
 
 import './style/moderate-right-nav.scss';
 
-export default function ModerateRightNav({ account, handleModerateCallback }) {
+const Accept = 1;
+const Report = 2;
+
+export default function ModerateRightNav({
+  thumbnail,
+  artwork,
+  account,
+  handleModerateCallback,
+  handleDownloadAssetsCallback,
+}) {
   const { avatar, fullname, email } = account;
+  const { assets } = artwork;
   const [note, setNote] = React.useState('');
-  const [openDialog, setOpenDialog] = React.useState(false);
+  const [openNoteDialog, setOpenNoteDialog] = React.useState(false);
+  const [openReportDialog, setOpenReportDialog] = React.useState(false);
+  const [openDownloadDialog, setOpenDownloadDialog] = React.useState(false);
+  const [selectedValue, setSelectedValue] = React.useState('Spam');
+
+  const handleRadioChange = (event) => {
+    setSelectedValue(event.target.value);
+  };
 
   return (
     <div className="container">
@@ -21,23 +40,38 @@ export default function ModerateRightNav({ account, handleModerateCallback }) {
             <p className="email">{email}</p>
           </div>
           <div className="download-container">
-            <Button className="download-btn" rounded label="Tải tất cả tài nguyên" />
+            <Button
+              className="download-btn"
+              rounded
+              label="Tải tất cả tài nguyên"
+              onClick={() => setOpenDownloadDialog(true)}
+            />
           </div>
           <div className="btn-container">
             <Button
               rounded
               label="Chấp nhận bài "
               onClick={() => {
-                setOpenDialog(true);
+                setOpenNoteDialog(true);
               }}
             />
-            <Button rounded label="Báo cáo vi phạm " />
+            <Button
+              rounded
+              label="Báo cáo vi phạm "
+              onClick={() => {
+                setOpenReportDialog(true);
+              }}
+            />
           </div>
         </>
       ) : (
         <div>Chưa có tác phẩm nào cần duyệt!</div>
       )}
-      <Dialog className="note-dialog" open={openDialog} onClose={() => setOpenDialog(false)}>
+      <Dialog
+        className="note-dialog"
+        open={openNoteDialog}
+        onClose={() => setOpenNoteDialog(false)}
+      >
         <div className="dialog-container">
           <h2 className="dialog-title">Ghi chú</h2>
           <textarea
@@ -53,9 +87,87 @@ export default function ModerateRightNav({ account, handleModerateCallback }) {
             className="dialog-btn"
             label="Chấp nhận"
             onClick={() => {
-              handleModerateCallback(note);
-              setOpenDialog(false);
+              handleModerateCallback(Accept, note);
+              setOpenNoteDialog(false);
             }}
+          />
+        </div>
+      </Dialog>
+      <Dialog
+        className="report-dialog"
+        open={openReportDialog}
+        onClose={() => setOpenReportDialog(false)}
+      >
+        <div className="dialog-container">
+          <h2 className="dialog-title">Báo cáo vi phạm</h2>
+          <FormControl>
+            <RadioGroup
+              aria-labelledby="demo-radio-buttons-group-label"
+              name="radio-buttons-group"
+              value={selectedValue}
+              onChange={handleRadioChange}
+            >
+              <FormControlLabel value="Nội dung rác" control={<Radio />} label="Nội dung rác" />
+              <FormControlLabel
+                value="Nội dung người lớn"
+                control={<Radio />}
+                label="Nội dung người lớn"
+              />
+              <FormControlLabel
+                value="Nội dung lừa đảo"
+                control={<Radio />}
+                label="Nội dung lừa đảo"
+              />
+              <FormControlLabel
+                value="Nội dung gây hại hoặc bất hợp pháp"
+                control={<Radio />}
+                label="Nội dung gây hại hoặc bất hợp pháp"
+              />
+              <FormControlLabel
+                value="Vi phạm quyền lợi của tôi"
+                control={<Radio />}
+                label="Vi phạm quyền lợi của tôi"
+              />
+              <FormControlLabel
+                value="Nội dung thiếu sót hoặc không phù hợp"
+                control={<Radio />}
+                label="Nội dung thiếu sót hoặc không phù hợp"
+              />
+              <FormControlLabel value="Lý do khác" control={<Radio />} label="Lý do khác" />
+            </RadioGroup>
+          </FormControl>
+          {selectedValue === 'Lý do khác' && (
+            <TextField
+              id="other-reason"
+              label="Lý do khác"
+              multiline
+              rows={4}
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              onChange={(e) => setSelectedValue(e.target.value)}
+            />
+          )}
+          <Button
+            className="dialog-btn"
+            label="Báo cáo"
+            onClick={() => {
+              handleModerateCallback(Report, selectedValue);
+              setOpenReportDialog(false);
+            }}
+          />
+        </div>
+      </Dialog>
+      <Dialog
+        className="download-resourses-dialog"
+        open={openDownloadDialog}
+        onClose={() => setOpenDownloadDialog(false)}
+      >
+        <div className="dialog-container">
+          <AssetsCard
+            thumbnail={thumbnail}
+            itemsList={assets}
+            handleDownloadAssetsCallback={handleDownloadAssetsCallback}
           />
         </div>
       </Dialog>
@@ -64,6 +176,9 @@ export default function ModerateRightNav({ account, handleModerateCallback }) {
 }
 
 ModerateRightNav.propTypes = {
+  thumbnail: PropTypes.string,
+  artwork: PropTypes.object,
   account: PropTypes.object.isRequired,
   handleModerateCallback: PropTypes.func.isRequired,
+  handleDownloadAssetsCallback: PropTypes.func.isRequired,
 };
