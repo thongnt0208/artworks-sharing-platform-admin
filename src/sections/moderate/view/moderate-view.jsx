@@ -9,8 +9,13 @@ import ModerateContent from '../moderate-content';
 import ModerateRightNav from '../moderate-right-nav';
 import { downloadAssets, getArtworksData, updateArtworkState } from '../Service';
 import { getArtworkDetailData } from '../Service';
+import { getAuthInfo } from 'src/utils/AuthUtil';
 
 export default function ModerateView() {
+  const authData = getAuthInfo();
+  if (!authData) {
+    window.location.href = '/login';
+  }
   const toast = useRef(null);
   const [tabValue, setTabValue] = React.useState('0');
   const [refresh, setRefresh] = React.useState(false);
@@ -67,6 +72,7 @@ export default function ModerateView() {
   };
 
   useEffect(() => {
+    if (selectingId === '') return;
     getArtworkDetailData(selectingId).then((data) => {
       setArtwork(data);
     });
