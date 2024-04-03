@@ -6,12 +6,12 @@ import axios, { axiosPrivate } from '../../hooks/use-axios';
  * @param {number} pageSize - The number of items per page.
  * @returns {Promise<Array>} - A promise that resolves to an array of artwork items.
  * @author AnhDH
- * @version 1.0.0
+ * @version 1.0.1
  */
-export async function getArtworksData(pageNumber, pageSize) {
+export async function getArtworksData(state, pageNumber, pageSize) {
   const response = await axiosPrivate.get('/moderation/artworks', {
     params: {
-      state: 0,
+      state,
       pageNumber,
       pageSize,
     },
@@ -45,21 +45,30 @@ export async function getArtworkDetailData(artworkId) {
  * @param {string} note - The note associated with the state change.
  * @returns {Promise<boolean>} - A promise that resolves to true if the artwork state is updated successfully, or false otherwise.
  * @author AnhDH
- * @version 1.0.0
+ * @version 1.0.1
  */
 export async function updateArtworkState(artworkId, state, note) {
-  const response = await axiosPrivate.put(`/moderation/artworks/${artworkId}/state`, {
-    state,
-    note,
-  });
-  if (response.status !== 204) {
-    console.error('Failed to update artwork state', response);
-    return false;
+  try {
+    const response = await axiosPrivate.put(`/moderation/artworks/${artworkId}/state`, {
+      state,
+      note,
+    });
+    if (response.status !== 204) {
+      return response;
+    }
+    return response;
+  } catch (error) {
+    return error;
   }
-  console.log('Update artwork state successfully', response);
-  return true;
 }
 
+/**
+ * Downloads assets from the server.
+ * @param {string} assetId - The ID of the asset to download.
+ * @returns {Promise<string>} - The download link for the asset.
+ * @author AnhDH
+ * @version 1.0.0
+ */
 export async function downloadAssets(assetId) {
   try {
     const response = await axiosPrivate.get(`/assets/download/${assetId}`, {
