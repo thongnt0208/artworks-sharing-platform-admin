@@ -1,0 +1,46 @@
+@import '/src/const/variables.scss';
+
+.container {
+  .report-table {
+    .row-details {
+      .target-info {
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        align-items: start;
+        .info-section {
+          width: fit-content;
+          padding: 30px;
+          display: flex;
+          flex-direction: row;
+          justify-content: start;
+          align-items: start;
+          border: 1px solid $bg-300;
+          border-radius: $borderRadius-100;
+          box-shadow: $tag-shadow;
+          .image-info {
+            img {
+              width: 100px;
+              height: 100px;
+              border-radius: 50%;
+            }
+          }
+          .info {
+            margin-left: 20px;
+            p {
+              font-size: 16px;
+              color: #333;
+            }
+          }
+        }
+        .moderate-section {
+          margin-left: 20px;
+          p {
+            font-size: 16px;
+            color: #333;
+          }
+        }
+      }
+    }
+  }
+}

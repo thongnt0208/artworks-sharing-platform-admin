@@ -57,7 +57,6 @@ const setNewAccessToken = (accessToken) => {
  * @version 1.0.0
  */
 const getAuthInfo = () => {
-  console.log(getFromLS('authData'));
   return getFromLS('authData');
 };
 
