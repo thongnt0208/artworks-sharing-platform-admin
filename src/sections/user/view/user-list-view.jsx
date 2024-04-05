@@ -155,28 +155,28 @@ export default function UserListView() {
         <Card>
           <TabView activeIndex={currentTab} onTabChange={(e) => setCurrentTab(e.index)}>
             <TabPanel headerTemplate={(options) => tabHeaderTemplate(options, { label: 'Active', value: 'active' }, 0)} headerClassName="flex align-items-center">
-              <DataTable value={showingData} header={() => renderHeader()} headerStyle={{borderRadius: "12px"}} columnResizeMode="expand" resizableColumns showGridlines>
+              <DataTable value={showingData} header={() => renderHeader()} headerStyle={{ borderRadius: "12px" }} columnResizeMode="expand" resizableColumns showGridlines rowHover >
                 {loading && <ProgressSpinner />}
-                <Column field="fullname" header="Tên đầy đủ" sortable style={{ minWidth: '14rem' }} />
+                <Column frozen headerStyle={{ width: '5rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyTemplate} />
+                <Column frozen field="fullname" header="Tên đầy đủ" sortable style={{ minWidth: '14rem' }} />
                 <Column field="username" header="Username" sortable style={{ minWidth: '14rem' }} />
                 <Column field="email" header="Email" sortable style={{ minWidth: '14rem' }} />
                 <Column field="role" header="Vai trò" sortable style={{ minWidth: '14rem' }} body={roleBodyTemplate} />
                 <Column field="status" header="Trạng thái" sortable style={{ minWidth: '12rem' }} body={statusBodyTemplate} />
                 <Column field="bio" header="Giới thiệu" style={{ minWidth: '12rem' }} />
                 <Column field="createdOn" header="Tạo lúc" style={{ minWidth: '12rem' }} body={(rowData) => fDateTime(rowData.createdOn, "dd/MM/yyyy HH:mm:ss")} />
-                <Column headerStyle={{ width: '5rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyTemplate} />
               </DataTable>
             </TabPanel>
             <TabPanel headerTemplate={(options) => tabHeaderTemplate(options, { label: 'Deleted', value: 'deleted' }, 1)} headerClassName="flex align-items-center">
-              <DataTable value={deletedTableData} header={() => renderHeader()} >
-                <Column field="fullname" header="Tên đầy đủ" sortable style={{ minWidth: '14rem' }} />
+              <DataTable frozenWidth="200px" value={deletedTableData} header={() => renderHeader()} rowHover >
+                <Column headerStyle={{ width: '5rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyTemplate} />
+                <Column frozen field="fullname" header="Tên đầy đủ" sortable style={{ minWidth: '14rem' }} />
                 <Column field="username" header="Username" sortable style={{ minWidth: '14rem' }} />
                 <Column field="email" header="Email" sortable style={{ minWidth: '14rem' }} />
                 <Column field="role" header="Vai trò" sortable style={{ minWidth: '14rem' }} body={roleBodyTemplate} />
                 <Column field="status" header="Trạng thái" sortable style={{ minWidth: '12rem' }} body={statusBodyTemplate} />
                 <Column field="bio" header="Giới thiệu" style={{ minWidth: '12rem' }} />
                 <Column field="deletedOn" header="Xoá lúc" style={{ minWidth: '12rem' }} body={(rowData) => fDateTime(rowData.deletedOn, "dd/MM/yyyy HH:mm:ss")} />
-                <Column headerStyle={{ width: '5rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyTemplate} />
               </DataTable>
             </TabPanel>
             <TabPanel header={<Button
