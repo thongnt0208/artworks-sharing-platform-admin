@@ -6,7 +6,7 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
-import { useMockedUser } from 'src/hooks/use-mocked-user';
+import { getAuthInfo } from 'src/utils/AuthUtil';
 
 import { _appAuthors, _appInvoices } from 'src/_mock';
 
@@ -22,11 +22,12 @@ import AnalyticsWidgetSummary from '../../analytics/analytics-widget-summary';
 // ----------------------------------------------------------------------
 
 export default function OverviewAppView() {
-  const { user } = useMockedUser();
 
   const theme = useTheme();
 
   const settings = useSettingsContext();
+
+  const currentUserInfo = getAuthInfo();
 
   return (
     <>
@@ -38,7 +39,7 @@ export default function OverviewAppView() {
             mb: { xs: 3, md: 5 },
           }}
         >
-          Xin chào {user?.displayName}, Mừng bạn trở lại 👋
+          Xin chào {currentUserInfo?.fullname}, Mừng bạn trở lại 👋
         </Typography>
 
         <Grid container spacing={3}>

@@ -154,7 +154,7 @@ export default function UserListView() {
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <Card>
           <TabView activeIndex={currentTab} onTabChange={(e) => setCurrentTab(e.index)}>
-            <TabPanel headerTemplate={(options) => tabHeaderTemplate(options, { label: 'Active', value: 'active' }, 0)} headerClassName="flex align-items-center">
+            <TabPanel headerTemplate={(options) => tabHeaderTemplate(options, { label: 'Hoạt động', value: 'active' }, 0)} headerClassName="flex align-items-center">
               <DataTable value={showingData} header={() => renderHeader()} headerStyle={{ borderRadius: "12px" }} columnResizeMode="expand" resizableColumns showGridlines rowHover >
                 {loading && <ProgressSpinner />}
                 <Column frozen headerStyle={{ width: '5rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyTemplate} />
@@ -167,7 +167,7 @@ export default function UserListView() {
                 <Column field="createdOn" header="Tạo lúc" style={{ minWidth: '12rem' }} body={(rowData) => fDateTime(rowData.createdOn, "dd/MM/yyyy HH:mm:ss")} />
               </DataTable>
             </TabPanel>
-            <TabPanel headerTemplate={(options) => tabHeaderTemplate(options, { label: 'Deleted', value: 'deleted' }, 1)} headerClassName="flex align-items-center">
+            <TabPanel headerTemplate={(options) => tabHeaderTemplate(options, { label: 'Đã xóa', value: 'deleted' }, 1)} headerClassName="flex align-items-center">
               <DataTable frozenWidth="200px" value={deletedTableData} header={() => renderHeader()} rowHover >
                 <Column headerStyle={{ width: '5rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyTemplate} />
                 <Column frozen field="fullname" header="Tên đầy đủ" sortable style={{ minWidth: '14rem' }} />
