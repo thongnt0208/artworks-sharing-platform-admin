@@ -32,7 +32,7 @@ export function useNavData() {
     const adminSpecific = [
       // MODERATE
       {
-        title: t('moderate'),
+        title: "Kiểm duyệt",
         path: paths.dashboard.moderate.root,
         icon: ICONS.order,
       },
@@ -46,11 +46,11 @@ export function useNavData() {
       {
         title: 'Thể loại',
         path: paths.dashboard.category.root,
-        icon: ICONS.category,
+        icon: ICONS.file,
       },
       // INVOICE MANAGER
       {
-        title: t('transaction'),
+        title: "Giao dịch",
         path: paths.dashboard.invoice.root,
         icon: ICONS.invoice,
       },
