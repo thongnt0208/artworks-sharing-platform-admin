@@ -72,18 +72,27 @@ export default function CommentRowExpand({ data, handleDeleteComment, handleReje
               setNote(e.target.value);
             }}
           />
-          <Button
-            className="dialog-btn"
-            label="Chấp nhận"
-            onClick={() => {
-              if (state === 1) {
-                handleDeleteComment(comment.id, data.id, state, note);
-              } else if (state === 2) {
-                handleRejectReport(data.id, state, note);
-              }
-              setOpenNoteDialog(false);
-            }}
-          />
+          <div className="w-full flex flex-row justify-content-center">
+            <Button
+              className="dialog-btn"
+              label="Xác nhận"
+              onClick={() => {
+                if (state === 1) {
+                  handleDeleteComment(comment.id, data.id, state, note);
+                } else if (state === 2) {
+                  handleRejectReport(data.id, state, note);
+                }
+                setOpenNoteDialog(false);
+              }}
+            />
+            <Button
+              className="dialog-btn"
+              label="Hủy"
+              onClick={() => {
+                setOpenNoteDialog(false);
+              }}
+            />
+          </div>
         </div>
       </Dialog>
     </div>
