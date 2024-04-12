@@ -71,11 +71,7 @@ export async function updateArtworkState(artworkId, state, note) {
  */
 export async function downloadAssets(assetId) {
   try {
-    const response = await axiosPrivate.get(`/assets/download/${assetId}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await axiosPrivate.get(`/assets/moderation/download/${assetId}`);
     if (response?.status !== 200) {
       console.error('Failed to download assets', response);
       return `https://artworkia-4f397.web.app/error?status=${response?.status}&message=${response?.data}`;
