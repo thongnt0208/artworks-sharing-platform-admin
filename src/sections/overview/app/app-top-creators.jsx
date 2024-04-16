@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import orderBy from 'lodash/orderBy';
 
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import { alpha } from '@mui/material/styles';
@@ -15,25 +14,46 @@ import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-export default function AppTopAuthors({ title, subheader, list, ...other }) {
+export default function AppTopCreatorSellAssets({ title, subheader, list, ...other }) {
   return (
-    <Card {...other}>
-      <CardHeader title={title} subheader={subheader} />
-
+    <div className="mt-2">
+      <CardHeader title="Bảng xếp hạng" />
       <Stack spacing={3} sx={{ p: 3 }}>
         {orderBy(list, ['totalFavorites'], ['desc']).map((author, index) => (
           <AuthorItem key={author.id} author={author} index={index} />
         ))}
       </Stack>
-    </Card>
+    </div>
   );
 }
 
-AppTopAuthors.propTypes = {
+AppTopCreatorSellAssets.propTypes = {
   list: PropTypes.array,
   subheader: PropTypes.string,
   title: PropTypes.string,
 };
+
+// ----------------------------------------------------------------------
+
+export function AppTopCreatorHired({ title, subheader, list, ...other }) {
+  return (
+    <div className="mt-2">
+      <CardHeader title="Bảng xếp hạng" />
+      <Stack spacing={3} sx={{ p: 3 }}>
+        {orderBy(list, ['totalFavorites'], ['desc']).map((author, index) => (
+          <AuthorItem key={author.id} author={author} index={index} />
+        ))}
+      </Stack>
+    </div>
+  );
+}
+
+AppTopCreatorHired.propTypes = {
+  list: PropTypes.array,
+  subheader: PropTypes.string,
+  title: PropTypes.string,
+};
+
 
 // ----------------------------------------------------------------------
 
