@@ -1,61 +1,147 @@
 /* eslint-disable */
 // ----------------------------------------------------------------------
 
+import { useEffect, useState } from 'react';
 import Stack from '@mui/material/Stack';
 import AppWidget from '../app-widget';
-import { useState, useEffect } from 'react';
-
-import { useTheme } from '@mui/material/styles';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import { Card, CardHeader } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 import { getAuthInfo } from 'src/utils/AuthUtil';
-
-// import { _appAuthors, _appInvoices } from 'src/_mock';
-import { _appAuthors } from 'src/_mock';
-
 import { useSettingsContext } from 'src/components/settings';
-
-import { BoughtAssetsData, BoughtAssetsTrendingData } from './MockData';
-// import AppNewInvoice from '../app-new-invoice';
 import AppTopCreatorSellAssets, { AppTopCreatorHired } from '../app-top-creators';
 import AppWidgetSummary from '../app-widget-summary';
-// import AppCurrentDownload from '../app-current-download';
 import AnalyticsWidgetSummary from '../../analytics/analytics-widget-summary';
 import AppBoughtAssetsTrending, { AppHiredServiceTrending } from '../app-line-chart';
 import AppBoughtAssetsCategory, { AppHiredServiceCategory } from '../app-pie-chart';
 import AppTransactionHistory from '../app-transaction-history';
+import {
+  GetAssetTransactionStatistic,
+  GetPercentageCategoryAssetTransactionStatistic,
+  GetPercentageCategoryProposalStatistic,
+  GetProposalStatistic,
+  GetTopCreatorMostHiredProposal,
+  GetTopCreatorMostSellAsset,
+  GetTotalAccounts,
+  GetTotalArtworks,
+  GetTotalReports,
+  GetTotalServices,
+} from './Service';
+import { GenerateArrayOfRandomColorCode } from 'src/utils/ColorHandler';
+import { LoadingScreen } from 'src/components/loading-screen';
 
 // ----------------------------------------------------------------------
 
 export default function OverviewAppView() {
+  const currentUserInfo = getAuthInfo();
+  if (!currentUserInfo) {
+    window.location.href = '/login';
+  }
+
   const theme = useTheme();
 
   const settings = useSettingsContext();
 
-  const currentUserInfo = getAuthInfo();
-
-  const [lineChartData, setLineChartData] = useState({
-    labels: BoughtAssetsTrendingData.map((data) => data.month),
+  const [totalArtworks, setTotalArtworks] = useState(0);
+  const [totalAccounts, setTotalAccounts] = useState(0);
+  const [totalService, setTotalService] = useState(0);
+  const [totalReport, setTotalReport] = useState(0);
+  const [topCreatorMostSellAsset, setTopCreatorMostSellAsset] = useState([]);
+  const [topCreatorMostHired, setTopCreatorMostHired] = useState([]);
+  const [percentageCategoryProposal, setPercentageCategoryProposal] = useState({
+    labels: [],
     datasets: [
       {
-        label: 'Số lượng người dùng mua tài nguyên',
-        data: BoughtAssetsTrendingData.map((data) => data.amount),
+        label: 'Tỉ lệ: ',
+        backgroundColor: GenerateArrayOfRandomColorCode(14),
+        data: [],
       },
     ],
   });
-
-  const [donutChartData, setDonutChartData] = useState({
-    labels: BoughtAssetsData.map((data) => data.category),
+  const [percentageCategoryAssetTransaction, setPercentageCategoryAssetTransaction] = useState({
+    labels: [],
     datasets: [
       {
-        label: 'Tài nguyên đã mở khóa',
-        data: BoughtAssetsData.map((data) => data.value),
+        label: 'Tỉ lệ: ',
+        backgroundColor: GenerateArrayOfRandomColorCode(14),
+        data: [],
       },
     ],
   });
+  const [proposalStatistic, setProposalStatistic] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: 'Số lượng trong ngày: ',
+        backgroundColor: GenerateArrayOfRandomColorCode(14),
+        data: [],
+      },
+    ],
+  });
+  const [assetTransactionStatistic, setAssetTransactionStatistic] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: 'Số lượng trong ngày: ',
+        backgroundColor: GenerateArrayOfRandomColorCode(1),
+        data: [],
+      },
+      {
+        label: 'Số lượng tổng: ',
+        backgroundColor: GenerateArrayOfRandomColorCode(1),
+        data: [],
+      }
+    ],
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        //Thống kê
+        GetTotalArtworks().then((data) => {
+          setTotalArtworks(data);
+        });
+        GetTotalAccounts().then((data) => {
+          setTotalAccounts(data);
+        });
+        GetTotalServices().then((data) => {
+          setTotalService(data);
+        });
+        GetTotalReports().then((data) => {
+          setTotalReport(data);
+        });
+
+        // Line Chart 
+        GetProposalStatistic().then((data) => {
+          setProposalStatistic(data);
+        });
+        GetAssetTransactionStatistic().then((data) => {
+          setAssetTransactionStatistic(data);
+        });
+        // Pie Chart 
+        GetPercentageCategoryAssetTransactionStatistic().then((data) => {
+          setPercentageCategoryAssetTransaction(data);
+        });
+        GetPercentageCategoryProposalStatistic().then((data) => {
+          setPercentageCategoryProposal(data);
+        });
+
+        // Top Creator 
+        GetTopCreatorMostSellAsset().then((data) => {
+          setTopCreatorMostSellAsset(data);
+        });
+        GetTopCreatorMostHiredProposal().then((data) => {
+          setTopCreatorMostHired(data);
+        });
+      } catch {
+        console.error('Không thể lấy dữ liệu thống kê đề xuất.');
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
@@ -69,12 +155,12 @@ export default function OverviewAppView() {
       </Typography>
 
       <Grid container spacing={3}>
-        {/* Analyst Widgets */}
+        {/* Thống kê */}
         <>
           <Grid xs={12} sm={6} md={3}>
             <AnalyticsWidgetSummary
               title="Tác phẩm"
-              total={234}
+              total={totalArtworks}
               icon={<img alt="icon" src="/assets/icons/glass/ic-landscape-48.png" />}
             />
           </Grid>
@@ -82,7 +168,7 @@ export default function OverviewAppView() {
           <Grid xs={12} sm={6} md={3}>
             <AnalyticsWidgetSummary
               title="Người dùng"
-              total={1352831}
+              total={totalAccounts}
               color="warning"
               icon={<img alt="icon" src="/assets/icons/glass/ic-user-48.png" />}
             />
@@ -91,7 +177,7 @@ export default function OverviewAppView() {
           <Grid xs={12} sm={6} md={3}>
             <AnalyticsWidgetSummary
               title="Dịch vụ"
-              total={714000}
+              total={totalService}
               color="error"
               icon={<img alt="icon" src="/assets/icons/glass/ic-draw-48.png" />}
             />
@@ -100,63 +186,66 @@ export default function OverviewAppView() {
           <Grid xs={12} sm={6} md={3}>
             <AnalyticsWidgetSummary
               title="Báo cáo"
-              total={1723315}
+              total={totalReport}
               color="info"
               icon={<img alt="icon" src="/assets/icons/glass/ic-open-envelope-48.png" />}
             />
           </Grid>
         </>
 
-        {/* New Invoice Widget
-        <Grid xs={12} lg={8}>
-          <AppNewInvoice
-            title="Giao dịch mới nhất"
-            tableData={_appInvoices}
-            tableLabels={[
-              { id: 'id', label: 'ID giao dịch' },
-              { id: 'category', label: 'Thể loại' },
-              { id: 'price', label: 'Giá' },
-              { id: 'status', label: 'Trạng thái' },
-              { id: '' },
-            ]}
-          />
-        </Grid> */}
-
         {/* Xu hướng mở khóa tài nguyên */}
         <Card className="w-full flex flex-column">
           <CardHeader title="Xu hướng mở khóa tài nguyên" sx={{ mb: 5 }} />
-          <div className="w-full flex flex-row">
-            <Grid xs={12} md={6} lg={9}>
-              <AppBoughtAssetsTrending data={lineChartData} />
-            </Grid>
-            <Grid xs={12} md={6} lg={3}>
-              <AppBoughtAssetsCategory chart={donutChartData} lg={12} />
-              <AppTopCreatorSellAssets lg={12} list={_appAuthors} />
-            </Grid>
-          </div>
+          {assetTransactionStatistic &&
+          assetTransactionStatistic.labels.length > 0 &&
+          percentageCategoryAssetTransaction &&
+          percentageCategoryAssetTransaction.labels.length > 0 &&
+          topCreatorMostSellAsset &&
+          topCreatorMostSellAsset.length > 0 ? (
+            <div className="w-full flex flex-row">
+              <Grid xs={12} md={6} lg={9}>
+                <AppBoughtAssetsTrending data={assetTransactionStatistic} />
+              </Grid>
+              <Grid xs={12} md={6} lg={3}>
+                <AppBoughtAssetsCategory chart={percentageCategoryAssetTransaction} lg={12} />
+                <AppTopCreatorSellAssets lg={12} list={topCreatorMostSellAsset} />
+              </Grid>
+            </div>
+          ) : (
+            <LoadingScreen />
+          )}
         </Card>
 
         {/* Xu hướng thuê dịch vụ */}
         <Card className="w-full flex flex-column mt-2">
           <CardHeader title="Xu hướng thuê dịch vụ" sx={{ mb: 5 }} />
-          <div className="w-full flex flex-row">
-            <Grid xs={12} md={6} lg={9}>
-              <AppHiredServiceTrending data={lineChartData} />
-            </Grid>
-            <Grid xs={12} md={6} lg={3}>
-              <AppHiredServiceCategory chart={donutChartData} lg={12} />
-              <AppTopCreatorHired lg={12} list={_appAuthors} />
-            </Grid>
-          </div>
+          {proposalStatistic &&
+          proposalStatistic.labels.length > 0 &&
+          percentageCategoryProposal &&
+          percentageCategoryProposal.labels.length > 0 &&
+          topCreatorMostHired &&
+          topCreatorMostHired.length > 0 ? (
+            <div className="w-full flex flex-row">
+              <Grid xs={12} md={6} lg={9}>
+                <AppHiredServiceTrending data={proposalStatistic} />
+              </Grid>
+              <Grid xs={12} md={6} lg={3}>
+                <AppHiredServiceCategory chart={percentageCategoryProposal} lg={12} />
+                <AppTopCreatorHired lg={12} list={topCreatorMostHired} />
+              </Grid>
+            </div>
+          ) : (
+            <LoadingScreen />
+          )}
         </Card>
 
         {/* Lịch sủ giao dịch */}
-        <Card className="w-full flex flex-column mt-2">
-          <div className="w-full flex flex-row">
-            <Grid xs={12} md={6} lg={9}>
+        <Card className="w-full flex justify-content-center mt-2">
+          <div className="w-full flex flex-row justify-content-center">
+            <Grid xs={12} md={6} lg={12}>
               <AppTransactionHistory />
             </Grid>
-            <Grid className="flex flex-column" xs={12} md={6} lg={3}>
+            {/* <Grid className="flex flex-column" xs={12} md={6} lg={3}>
               <Grid xs={12} md={12} lg={12}>
                 <Stack spacing={3}>
                   <AppWidgetSummary
@@ -200,7 +289,7 @@ export default function OverviewAppView() {
                   />
                 </Stack>
               </Grid>
-            </Grid>
+            </Grid> */}
           </div>
         </Card>
       </Grid>

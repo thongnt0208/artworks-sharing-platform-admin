@@ -6,7 +6,7 @@ import { format, getTime, formatDistanceToNow } from 'date-fns';
 export function fDate(date, newFormat) {
   const fm = newFormat || 'dd MMM yyyy';
 
-  return date ? format(new Date(date), fm) : '';
+  return date ? format(new Date(date), fm, { locale: vi }) : '';
 }
 
 export function fDateTime(date, newFormat) {
