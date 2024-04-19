@@ -189,10 +189,10 @@ export async function GetProposalStatistic() {
           label: 'Số lượng trong ngày',
           data: data.map((item) => item.count),
         },
-        {
-          label: 'Số lượng tổng',
-          data: data.map((item) => item.total),
-        }
+        // {
+        //   label: 'Số lượng tổng',
+        //   data: data.map((item) => item.total),
+        // }
       ],
     };
     return formattedData;
@@ -223,10 +223,10 @@ export async function GetAssetTransactionStatistic() {
           label: 'Số lượng trong ngày',
           data: data.map((item) => item.count),
         },
-        {
-          label: 'Số lượng tổng',
-          data: data.map((item) => item.total),
-        }
+        // {
+        //   label: 'Số lượng tổng',
+        //   data: data.map((item) => item.total),
+        // }
       ],
     };
     return formattedData;
