@@ -20,7 +20,7 @@ export function useNavData() {
       subheader: t('overview'),
       items: [
         {
-          title: t('home'),
+          title: t('Thống kê'),
           path: paths.dashboard.root,
           icon: ICONS.dashboard,
         }
