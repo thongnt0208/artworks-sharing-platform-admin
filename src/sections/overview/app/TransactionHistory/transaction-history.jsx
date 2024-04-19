@@ -2,54 +2,74 @@ import React from 'react';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 
-import { getAuthInfo } from 'src/utils/AuthUtil';
+import { fDateTime } from 'src/utils/format-time';
 
 export default function TransactionHistory(transactionHistory) {
-  console.log('Transaction History: ', transactionHistory);
+  const { transactions } = transactionHistory;
+
   const fromAccRowTemplate = (rowData) => (
-    <span className={rowData.accountId !== getAuthInfo()?.id ? 'text-blue-600' : 'text-red-500'}>
-      {rowData.accountId !== getAuthInfo()?.id ? (
-        <>
-          <i className="pi pi-arrow-up mr-1" />
-          {rowData.fromFullname}
-        </>
-      ) : (
-        <>
-          <i className="pi pi-arrow-down mr-1" />
-          Tôi
-        </>
-      )}
-    </span>
+    <div className="flex flex-row align-items-center">
+      <img
+        src={rowData.fromAccount.avatar}
+        alt={rowData.fromAccount.fullname}
+        style={{ width: '32px', height: '32px', borderRadius: '50%' }}
+      />
+      <span className="ml-1">{rowData.fromAccount.fullname}</span>
+    </div>
   );
 
-  const priceRowTemplate = (rowData) => (
-    <span className={rowData.accountId !== getAuthInfo()?.id ? 'text-blue-600' : 'text-red-500'}>
-      {rowData.accountId !== getAuthInfo()?.id ? (
-        <>+{rowData.price.toLocaleString()}</>
-      ) : (
-        <>-{rowData.price.toLocaleString()}</>
-      )}
-    </span>
+  const toAccRowTemplate = (rowData) => (
+    <div className="flex flex-row align-items-center">
+      <img
+        src={rowData.toAccount.avatar}
+        alt={rowData.toAccount.fullname}
+        style={{ width: '32px', height: '32px', borderRadius: '50%' }}
+      />
+      <span className="ml-1">{rowData.toAccount.fullname}</span>
+    </div>
   );
 
-  const statusRowTemplate = (rowData) => (
-    <span
-      style={{
-        width: 'fit-content',
-        textAlign: 'center',
-        backgroundColor: rowData.transactionStatus === 'Thành công' ? 'green' : 'red',
-        padding: '0.25rem 0.5rem',
-        borderRadius: '1rem',
-        color: 'white',
-      }}
-    >
-      {rowData.transactionStatus}
-    </span>
-  );
+  const priceRowTemplate = (rowData) => <span>{rowData.price.toLocaleString()}</span>;
+ 
+  const statusRowTemplate = (rowData) => {
+    let backgroundColor;
+    let status;
+    switch (rowData.transactionStatus) {
+      case 'Success':
+        backgroundColor = 'green';
+        status = 'Thành công';
+        break;
+      case 'InProgress':
+        backgroundColor = '#059bff';
+        status = 'Đang xử lý';
+        break;
+      default:
+        backgroundColor = 'red';
+        status = 'Thất bại';
+    }
+
+    return (
+      <span
+        style={{
+          width: 'fit-content',
+          height: '100%',
+          backgroundColor,
+          padding: '0.25rem 0.5rem',
+          borderRadius: '1rem',
+          color: 'white',
+          textAlign: 'center',
+        }}
+      >
+        {status}
+      </span>
+    );
+  };
+
+  const timeRowTemplate = (rowData) => <span>{fDateTime(rowData.createdOn)}</span>;
 
   return (
     <DataTable
-      // value={transactionHistory}
+      value={transactions}
       className="w-full"
       paginator
       rows={5}
@@ -58,7 +78,9 @@ export default function TransactionHistory(transactionHistory) {
       currentPageReportTemplate="{first} to {last} of {totalRecords}"
       emptyMessage="Hãy tham gia vào các dịch vụ của Artworkia nhé!"
     >
-      <Column field="fromFullname" header="Người gửi/nhận" body={fromAccRowTemplate} />
+      <Column field="fromAccount" header="Người gửi" body={fromAccRowTemplate} />
+      <Column body={<i className="pi pi-arrow-right ml-1" />} />
+      <Column field="toAccount" header="Người nhận" body={toAccRowTemplate} />
       <Column field="detail" header="Chi tiết" />
       <Column field="price" header="Giá (XU)" body={priceRowTemplate} sortable />
       <Column
@@ -68,7 +90,7 @@ export default function TransactionHistory(transactionHistory) {
         style={{ display: 'flex' }}
         sortable
       />
-      <Column field="createdOn" header="Ngày tạo" />
+      <Column field="createdOn" body={timeRowTemplate} header="Ngày tạo" />
     </DataTable>
   );
 }
