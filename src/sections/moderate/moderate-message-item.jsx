@@ -5,6 +5,7 @@ import React from 'react'
 
 import './style/moderate-message-item.scss'
 import { Avatar } from 'primereact/avatar';
+import { fDate } from 'src/utils/format-time';
 
 export default function MessageItemTemplate(props) {
   const { item, selectingId, setSelectingId, setAccountId } = props;
@@ -48,7 +49,7 @@ export default function MessageItemTemplate(props) {
       </div>
       <div className="message-status-content">
         <div className="message-item-time text-cus-small">
-          {createdOn}
+          {fDate(createdOn)}
         </div>
         {!isSeenLocal && <div className="message-item-seen" />}
       </div>

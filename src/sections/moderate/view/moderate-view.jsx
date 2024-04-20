@@ -36,7 +36,6 @@ export default function ModerateView() {
 
   const handleModerateCallback = (state, note) => {
     if (selectingId === null) return;
-    // Call API to update artwork state
     const response = updateArtworkState(selectingId, state, note);
     response.then((data) => {
       if (data.status === 204) {
@@ -108,6 +107,7 @@ export default function ModerateView() {
       </div>
       <div className="right-nav col-3 max-h-full">
         <ModerateRightNav
+          tabValue={tabValue}
           thumbnail={artwork.thumbnail}
           artwork={artwork}
           account={account || {}}
