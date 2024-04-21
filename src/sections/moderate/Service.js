@@ -58,6 +58,7 @@ export async function updateArtworkState(artworkId, state, note) {
     }
     return response;
   } catch (error) {
+    console.log(error)
     return error;
   }
 }

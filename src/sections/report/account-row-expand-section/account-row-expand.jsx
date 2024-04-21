@@ -5,6 +5,8 @@ import { Button } from 'primereact/button';
 
 import { Dialog } from '@mui/material';
 
+import defaultAvatar from 'src/assets/defaultImage/default-avatar.png'; // Import the default avatar image
+
 import './account-row-expand.scss';
 
 export default function AccountRowExpand({ data, handleDeleteAccount, handleRejectReport }) {
@@ -41,7 +43,7 @@ export default function AccountRowExpand({ data, handleDeleteAccount, handleReje
         <div className="avatar-container">
           <img
             alt={`Ảnh đại diện của ${data.target.fullname}`}
-            src={data.target.avatar}
+            src={data.target.avatar || defaultAvatar}
             className="avatar-image"
           />
         </div>

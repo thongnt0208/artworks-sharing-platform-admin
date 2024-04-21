@@ -1,5 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React, { useEffect } from 'react';
 import { Button } from 'primereact/button';
 
 import { Radio, Dialog, TextField, RadioGroup, FormControl, FormControlLabel } from '@mui/material';
@@ -12,6 +12,7 @@ const Accept = 1;
 const Report = 2;
 
 export default function ModerateRightNav({
+  tabValue,
   thumbnail,
   artwork,
   account,
@@ -20,6 +21,7 @@ export default function ModerateRightNav({
 }) {
   const { avatar, fullname, email } = account;
   const { assets } = artwork;
+  const [tab, setTab] = React.useState(tabValue);
   const [note, setNote] = React.useState('');
   const [openNoteDialog, setOpenNoteDialog] = React.useState(false);
   const [openReportDialog, setOpenReportDialog] = React.useState(false);
@@ -29,6 +31,10 @@ export default function ModerateRightNav({
   const handleRadioChange = (event) => {
     setSelectedValue(event.target.value);
   };
+
+  useEffect(() => {
+    setTab(tabValue);
+  }, [tabValue]);
 
   return (
     <div className="container">
@@ -48,20 +54,24 @@ export default function ModerateRightNav({
             />
           </div>
           <div className="btn-container">
-            <Button
-              rounded
-              label="Chấp nhận bài "
-              onClick={() => {
-                setOpenNoteDialog(true);
-              }}
-            />
-            <Button
-              rounded
-              label="Báo cáo vi phạm "
-              onClick={() => {
-                setOpenReportDialog(true);
-              }}
-            />
+            {tab === '1' || tab === '2' ? null : (
+              <>
+                <Button
+                  rounded
+                  label="Chấp nhận bài "
+                  onClick={() => {
+                    setOpenNoteDialog(true);
+                  }}
+                />
+                <Button
+                  rounded
+                  label="Từ chối bài"
+                  onClick={() => {
+                    setOpenReportDialog(true);
+                  }}
+                />
+              </>
+            )}
           </div>
         </>
       ) : (
@@ -99,7 +109,7 @@ export default function ModerateRightNav({
         onClose={() => setOpenReportDialog(false)}
       >
         <div className="dialog-container">
-          <h2 className="dialog-title">Báo cáo vi phạm</h2>
+          <h2 className="dialog-title">Lý do từ chối</h2>
           <FormControl>
             <RadioGroup
               aria-labelledby="demo-radio-buttons-group-label"
@@ -176,6 +186,7 @@ export default function ModerateRightNav({
 }
 
 ModerateRightNav.propTypes = {
+  tabValue: PropTypes.string,
   thumbnail: PropTypes.string,
   artwork: PropTypes.object,
   account: PropTypes.object.isRequired,

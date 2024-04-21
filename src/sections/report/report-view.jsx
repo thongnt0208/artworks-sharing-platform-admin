@@ -14,7 +14,7 @@ import './report-view.scss';
 import AccountRowExpand from './account-row-expand-section/account-row-expand';
 import CommentRowExpand from './comment-row-expand-section/comment-row-expand';
 import ArtworkRowExpand from './artwork-row-expand-section/artwork-row-expand';
-import { getReportData, softDeleteAccount, softDeleteArtwork, softDeleteComment, updateReportState } from './Service';
+import { getReportData, softDeleteAccount, softDeleteArtwork, updateReportState } from './Service';
 
 export default function ReportView() {
   const authData = getAuthInfo();
@@ -52,7 +52,6 @@ export default function ReportView() {
   };
 
   const handleDeleteAccount = (accountId, reportId, state, note) => {
-    console.log('delete account status', state);
     try {
       const responseDeleteAcc = softDeleteAccount(accountId);
       if (responseDeleteAcc) {
@@ -71,24 +70,24 @@ export default function ReportView() {
     }
   };
 
-  const handleDeleteComment = (commentId, reportId, state, note) => {
-    try {
-      const responseDeleteCom = softDeleteComment(commentId);
-      if (responseDeleteCom) {
-        const response = updateReportState(reportId, state, note);
-        if (response) {
-          setRefresh(true);
-          showSuccess('Thành công', 'Đã xóa bình luận và cập nhật trạng thái báo cáo.');
-        } else {
-          showError('Lỗi', 'Không thể cập nhật trạng thái báo cáo.');
-        }
-      } else {
-        showError('Lỗi', 'Không thể xóa bình luận.');
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const handleDeleteComment = (commentId, reportId, state, note) => {
+  //   try {
+  //     const responseDeleteCom = softDeleteComment(commentId);
+  //     if (responseDeleteCom) {
+  //       const response = updateReportState(reportId, state, note);
+  //       if (response) {
+  //         setRefresh(true);
+  //         showSuccess('Thành công', 'Đã xóa bình luận và cập nhật trạng thái báo cáo.');
+  //       } else {
+  //         showError('Lỗi', 'Không thể cập nhật trạng thái báo cáo.');
+  //       }
+  //     } else {
+  //       showError('Lỗi', 'Không thể xóa bình luận.');
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const handleDeleteArtwork = (artworkId, reportId, state, note) => {
     try { 
@@ -190,7 +189,7 @@ export default function ReportView() {
         (tabValue === '1' && (
           <CommentRowExpand
             data={data}
-            handleDeleteComment={handleDeleteComment}
+            // handleDeleteComment={handleDeleteComment}
             handleRejectReport={handleRejectReport}
           />
         )) ||
@@ -230,7 +229,7 @@ export default function ReportView() {
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={handleTabChange} aria-label="lab API tabs example">
             <Tab label="Tài khoản" value="0" />
-            <Tab label="Bình luận" value="1" />
+            {/* <Tab label="Bình luận" value="1" /> */}
             <Tab label="Tác phẩm" value="2" />
           </TabList>
         </Box>

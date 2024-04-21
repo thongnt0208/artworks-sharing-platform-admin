@@ -118,7 +118,7 @@ export async function softDeleteComment(commentId) {
  */
 export async function getArtworkDetailData(artworkId) {
   try {
-    const response = await axiosPrivate.get(`/artworks/${artworkId}`);
+    const response = await axiosPrivate.get(`/moderation/artworks/${artworkId}`);
     return response.data;
   } catch (error) {
     return error;
