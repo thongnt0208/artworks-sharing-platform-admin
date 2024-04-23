@@ -27,10 +27,10 @@ export async function getArtworksData(state, pageNumber, pageSize) {
  * @param {string} artworkId - The ID of the artwork to retrieve.
  * @returns {Promise<Object>} - A promise that resolves to the artwork detail data.
  * @author AnhDH
- * @version 1.0.0
+ * @version 1.1.0
  */
 export async function getArtworkDetailData(artworkId) {
-  const response = await axios.get(`/artworks/${artworkId}`, {
+  const response = await axios.get(`/moderation/artworks/${artworkId}`, {
     headers: {
       'Content-Type': 'application/json',
     },
