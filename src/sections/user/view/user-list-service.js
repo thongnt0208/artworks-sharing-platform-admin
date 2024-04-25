@@ -9,12 +9,12 @@ import { axiosPrivate } from 'src/hooks/use-axios';
  *  console.log(accounts);
  * }
  * @author ThongNT
- * @version 1.0.0
+ * @version 2.0.0
  */
-export async function getAccountsList() {
+export async function getAccountsList(offset = 1, pageSize = 20) {
   return axiosPrivate
-    .get('/accounts')
-    .then((response) => response.data)
+    .get(`/accounts?PageNumber=${offset}&PageSize=${pageSize}`)
+    .then((response) => response.data);
 }
 
 /**

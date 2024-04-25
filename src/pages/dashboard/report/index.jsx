@@ -8,7 +8,7 @@ export default function ReportPage() {
   return (
     <>
       <Helmet>
-        <title> Report: Report</title>
+        <title> Báo cáo: Báo cáo</title>
       </Helmet>
 
       <ReportView />
