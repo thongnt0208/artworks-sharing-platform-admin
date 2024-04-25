@@ -24,7 +24,7 @@ import { useSettingsContext } from 'src/components/settings';
 
 // eslint-disable-next-line import/no-unresolved
 import './user-list-view.scss';
-import { deleteAccount, getAccountsList, getDeletedAccountsList } from './user-list-service';
+import { deleteAccount, restoreAccount, getAccountsList, getDeletedAccountsList } from './user-list-service';
 
 // ----------------------------------------------------------------------
 
@@ -118,7 +118,7 @@ export default function UserListView() {
     {
       label: currentTab === 0 ? 'Xoá' : 'Khôi phục',
       icon: currentTab === 0 ? 'pi pi-trash' : 'pi pi-refresh',
-      command: currentTab === 0 ? (() => deleteAnAccount(selectedAccountId)) : (() => { }),
+      command: currentTab === 0 ? (() => deleteAnAccount(selectedAccountId)) : (() => restoreAnAccount(selectedAccountId)),
     }
   ];
 
@@ -132,8 +132,22 @@ export default function UserListView() {
             refreshTableData();
             toast.current.show({ severity: 'success', summary: 'Đã xoá', detail: 'Tài khoản đã bị xoá', life: 3000 });
           })
-          .catch((error) => handleUnauthError(error))
+          .catch((error) =>
+            toast.current.show({ severity: 'error', summary: 'Chưa xoá', detail: `Đã xảy ra lỗi, vui lòng thử lại. ${JSON.stringify(error)}`, life: 3000 }));
       }
+    }
+  }
+
+  const restoreAnAccount = (id) => {
+    if (selectedAccountId !== null) {
+      setLoading(true);
+      restoreAccount(id)
+        .then(() => {
+          setLoading(false);
+          refreshTableData();
+          toast.current.show({ severity: 'success', summary: 'Đã khôi phục', detail: 'Tài khoản đã được khôi phục', life: 3000 });
+        })
+        .catch((error) => toast.current.show({ severity: 'error', summary: 'Chưa khôi phục', detail: `Đã xảy ra lỗi, vui lòng thử lại. ${JSON.stringify(error)}`, life: 3000 }));
     }
   }
 

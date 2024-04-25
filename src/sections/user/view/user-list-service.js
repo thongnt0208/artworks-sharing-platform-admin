@@ -2,7 +2,7 @@ import { axiosPrivate } from 'src/hooks/use-axios';
 
 /**
  * This function to get the list of accounts
- * 
+ *
  * @returns A promise that contains the list of accounts
  * @example
  * getAccountsList().then((accounts) => {
@@ -19,7 +19,7 @@ export async function getAccountsList(offset = 1, pageSize = 20) {
 
 /**
  * This function to get the list of deleted accounts
- * 
+ *
  * @returns A promise that contains the list of deleted accounts
  * @example
  * getDeletedAccountsList().then((accounts) => {
@@ -29,15 +29,12 @@ export async function getAccountsList(offset = 1, pageSize = 20) {
  * @version 1.0.0
  */
 export async function getDeletedAccountsList() {
-    return axiosPrivate
-        .get('/accounts/deleted')
-        .then((response) => response.data)
-    
+  return axiosPrivate.get('/accounts/deleted').then((response) => response.data);
 }
 
 /**
  * This function to delete an account by id
- * 
+ *
  * @param {*} id - The id of the account to be deleted
  * @returns A promise that contains the result of the deletion
  * @example
@@ -51,4 +48,29 @@ export async function deleteAccount(id) {
   return axiosPrivate
     .delete(`/accounts/${id}`)
     .then((response) => response.data)
+    .catch((error) => {
+      console.log('Delete account error ', error);
+      throw error;
+    });
+}
+
+/**
+ * This function to restore an account by id
+ *
+ * @param {*} id - The id of the account to be restored
+ * @returns A promise that contains the result of the restoration
+ * @example
+ * restoreAccount('user1').then((result) => {
+ * console.log(result)
+ * }
+ * @version 1.0.0
+ */
+export async function restoreAccount(id) {
+  return axiosPrivate
+    .put(`/accounts/undelete/${id}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.log('Restore account error ', error);
+      throw error;
+    });
 }
