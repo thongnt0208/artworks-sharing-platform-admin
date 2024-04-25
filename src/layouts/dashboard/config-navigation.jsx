@@ -74,7 +74,7 @@ export function useNavData() {
     const moderatorSpecific = [
       // MODERATE
       {
-        title: t('moderate'),
+        title: t('Kiểm duyệt'),
         path: paths.dashboard.moderate.root,
         icon: ICONS.order,
       },
@@ -82,11 +82,17 @@ export function useNavData() {
       {
         title: 'Thể loại',
         path: paths.dashboard.category.root,
-        icon: ICONS.category,
+        icon: ICONS.file,
+      },
+      // INVOICE MANAGER
+      {
+        title: "Giao dịch",
+        path: paths.dashboard.invoice.root,
+        icon: ICONS.invoice,
       },
       // REPORT
       {
-        title: t('report'),
+        title: 'Báo cáo',
         path: paths.dashboard.report.root,
         icon: ICONS.reporter,
       },

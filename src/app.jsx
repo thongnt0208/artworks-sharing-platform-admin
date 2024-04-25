@@ -28,6 +28,10 @@ import { SettingsDrawer, SettingsProvider } from 'src/components/settings';
 import { CheckoutProvider } from 'src/sections/checkout/context';
 
 import { AuthProvider } from 'src/auth/context/jwt';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router';
+import { ValidateAccessToken } from './pages/auth/validate/service';
+import { removeAuthInfo } from './utils/AuthUtil';
 // import { AuthProvider } from 'src/auth/context/auth0';
 // import { AuthProvider } from 'src/auth/context/amplify';
 // import { AuthProvider } from 'src/auth/context/firebase';
@@ -36,6 +40,18 @@ import { AuthProvider } from 'src/auth/context/jwt';
 
 export default function App() {
   useScrollToTop();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    ValidateAccessToken().then((res) => {
+      if (!res) {
+        removeAuthInfo();
+        navigate('/login');
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <PrimeReactProvider>

@@ -8,7 +8,7 @@ export default function ModeratePage() {
   return (
     <>
       <Helmet>
-        <title> Moderate: Moderate</title>
+        <title> Kiểm duyệt: Kiểm duyệt</title>
       </Helmet>
 
       <ModerateView />
