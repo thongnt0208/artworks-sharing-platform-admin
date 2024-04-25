@@ -7,7 +7,7 @@ export default function CategoryListPage() {
   return (
     <>
       <Helmet>
-        <title> Dashboard: Category List</title>
+        <title> Tổng quan: Danh sách thể loại</title>
       </Helmet>
 
       <CategoryListView />
