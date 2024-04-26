@@ -69,26 +69,28 @@ export default function ArtworkRowExpand({ data, handleDeleteArtwork, handleReje
           </div>
         </div>
       </div>
-      <div className="action-section">
-        <Button
-          rounded
-          className="top-button"
-          label="Xóa tác phẩm"
-          onClick={() => {
-            setState(1);
-            setOpenNoteDialog(true);
-          }}
-        />
-        <Button
-          rounded
-          className="bot-button"
-          label="Từ chối báo cáo"
-          onClick={() => {
-            setState(2);
-            setOpenNoteDialog(true);
-          }}
-        />
-      </div>
+      {(data.state !== "Accepted" && data.state !== "Declined") && (
+          <div className="action-section">
+            <Button
+              rounded
+              className="top-button"
+              label="Xóa tác phẩm"
+              onClick={() => {
+                setState(1);
+                setOpenNoteDialog(true);
+              }}
+            />
+            <Button
+              rounded
+              className="bot-button"
+              label="Từ chối báo cáo"
+              onClick={() => {
+                setState(2);
+                setOpenNoteDialog(true);
+              }}
+            />
+          </div>
+        )}
       <Dialog
         className="note-dialog"
         open={openNoteDialog}
