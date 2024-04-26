@@ -10,6 +10,7 @@ import defaultAvatar from 'src/assets/defaultImage/default-avatar.png'; // Impor
 import './account-row-expand.scss';
 
 export default function AccountRowExpand({ data, handleDeleteAccount, handleRejectReport }) {
+  console.log("report: ", data);
   const [openNoteDialog, setOpenNoteDialog] = React.useState(false);
   const [state, setState] = React.useState(1);
   const [note, setNote] = React.useState('');
@@ -39,7 +40,7 @@ export default function AccountRowExpand({ data, handleDeleteAccount, handleReje
 
   return (
     <>
-      <Card footer={footer} className="user-information-card">
+      <Card footer={(data.state !== "Accepted" && data.state !== "Declined") && footer} className="user-information-card">
         <div className="avatar-container">
           <img
             alt={`Ảnh đại diện của ${data.target.fullname}`}

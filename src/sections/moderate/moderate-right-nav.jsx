@@ -10,6 +10,7 @@ import './style/moderate-right-nav.scss';
 
 const Accept = 1;
 const Report = 2;
+const MAIN_PLATFORM_URL = 'https://artworkia-4f397.web.app';
 
 export default function ModerateRightNav({
   tabValue,
@@ -19,8 +20,9 @@ export default function ModerateRightNav({
   handleModerateCallback,
   handleDownloadAssetsCallback,
 }) {
+  console.log('artwork', artwork);
   const { avatar, fullname, email } = account;
-  const { assets } = artwork;
+  const { state, assets } = artwork;
   const [tab, setTab] = React.useState(tabValue);
   const [note, setNote] = React.useState('');
   const [openNoteDialog, setOpenNoteDialog] = React.useState(false);
@@ -44,6 +46,12 @@ export default function ModerateRightNav({
             <img className="avatar-image" src={avatar} alt={fullname} />
             <h2 className="fullname">{fullname}</h2>
             <p className="email">{email}</p>
+            <Button
+              className="navigate-to-account-btn"
+              rounded
+              label="Đi tới trang cá nhân"
+              onClick={() => window.open(`${MAIN_PLATFORM_URL}/account/${account.id}`, '_blank')}
+            />
           </div>
           <div className="download-container">
             <Button
@@ -52,6 +60,13 @@ export default function ModerateRightNav({
               label="Tải tất cả tài nguyên"
               onClick={() => setOpenDownloadDialog(true)}
             />
+            {state !== 'Waiting' && (
+             <Button
+              className="navigate-to-aw-btn"
+              rounded
+              label="Đi tới bài viết"
+              onClick={() => window.open(`${MAIN_PLATFORM_URL}/artwork/${artwork.id}`, '_blank')}
+            />)}
           </div>
           <div className="btn-container">
             {tab === '1' || tab === '2' ? null : (

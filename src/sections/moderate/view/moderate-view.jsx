@@ -81,7 +81,7 @@ export default function ModerateView() {
     setSelectingId('');
     setAccountId('');
     setAccount({});
-    handleGetArtworksData(tabValue, pageNumber, 50);
+    handleGetArtworksData(tabValue, pageNumber, 100);
   }, [refresh, tabValue]);
 
   useEffect(() => {

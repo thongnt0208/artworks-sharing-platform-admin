@@ -21,6 +21,10 @@
     .email {
       margin: 5px 0 20px 0;
     }
+    .navigate-to-account-btn {
+      width: 80%;
+      margin-bottom: 10px;
+    }
   }
 
   .download-container {
@@ -30,8 +34,9 @@
     align-items: center;
     margin-bottom: 20px;
     border-bottom: 1px solid $gray-default;
-    .download-btn {
-      margin-bottom: 20px;
+    .download-btn, .navigate-to-aw-btn {
+      width: 80%;
+      margin-bottom: 10px;
     }
   }
 
