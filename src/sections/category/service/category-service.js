@@ -2,7 +2,7 @@ import { axiosPrivate } from 'src/hooks/use-axios';
 
 /**
  * This function to get the list of categories
- * 
+ *
  * @returns A promise that contains the list of categories
  * @example
  * getCategoriesList().then((categories) => {
@@ -12,14 +12,18 @@ import { axiosPrivate } from 'src/hooks/use-axios';
  * @version 1.0.0
  */
 export async function getCategoriesList() {
-  return axiosPrivate
-    .get('/categories')
-    .then((response) => response.data)
+  return axiosPrivate.get('/categories').then((response) => {
+    console.log(response.data);
+    return response.data.map((category) => ({
+      id: category.id,
+      categoryName: category.categoryName,
+    }));
+  });
 }
 
 /**
  * This function to delete a category by id
- * 
+ *
  * @param {*} id - The id of the category to be deleted
  * @returns A promise that contains the result of the deletion
  * @example
@@ -30,14 +34,12 @@ export async function getCategoriesList() {
  * @version 1.0.0
  */
 export async function deleteCategory(id) {
-  return axiosPrivate
-    .delete(`/categories/${id}`)
-    .then((response) => response.data)
+  return axiosPrivate.delete(`/categories/${id}`).then((response) => response.data);
 }
 
 /**
  * This function to update a category name by id
- * 
+ *
  * @param {*} id - The id of the category to be updated
  * @param {*} categoryName - The new category name
  * @returns A promise that contains the result of the update
@@ -49,14 +51,12 @@ export async function deleteCategory(id) {
  * @version 1.0.0
  */
 export async function updateCategory(id, categoryName) {
-  return axiosPrivate
-    .put(`/categories/${id}`, { categoryName })
-    .then((response) => response.data)
+  return axiosPrivate.put(`/categories/${id}`, { categoryName }).then((response) => response.data);
 }
 
 /**
  * This function to create a new category
- * 
+ *
  * @param {*} categoryName - The new category name
  * @returns A promise that contains the result of the creation
  * @example
@@ -67,7 +67,5 @@ export async function updateCategory(id, categoryName) {
  * @version 1.0.0
  */
 export async function createCategory(categoryName) {
-    return axiosPrivate
-        .post(`/categories`, { categoryName })
-        .then((response) => response.data)
-    }
+  return axiosPrivate.post(`/categories`, { categoryName }).then((response) => response.data);
+}

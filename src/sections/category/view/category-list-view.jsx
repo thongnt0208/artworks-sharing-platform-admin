@@ -9,7 +9,6 @@ import { InputText } from 'primereact/inputtext';
 import { useRef, useState, useEffect } from 'react';
 import { Button as ButtonPr } from 'primereact/button';
 import { Tooltip as TooltipPr } from 'primereact/tooltip';
-import { ProgressSpinner } from 'primereact/progressspinner';
 
 import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
@@ -33,13 +32,14 @@ export default function CategoryListView() {
   const [selectedCategoryId, setSelectedCategoryId] = useState('');
   const [loading, setLoading] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const renderHeader = () => (
     <div className="flex flex-wrap gap-2 justify-content-between align-items-center">
       <h3 className="m-0">Các thể loại trên hệ thống</h3>
       <span className="p-input-icon-left">
         <i className="pi pi-search" />
-        <InputText value={() => { }} onChange={() => { }} placeholder="Tìm kiếm" />
+        <InputText value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Tìm kiếm" />
       </span>
     </div>
   );
@@ -66,6 +66,7 @@ export default function CategoryListView() {
     getCategoriesList()
       .then((categories) => {
         setLoading(false);
+        console.log(categories);
         setShowingData(categories);
       })
       .catch((error) => handleUnauthError(error));
@@ -133,6 +134,15 @@ export default function CategoryListView() {
     refreshTableData();
   }, [])
 
+  useEffect(() => {
+    if (searchTerm.trim().length > 0) {
+      const filteredData = showingData.filter((category) => category.categoryName.toLowerCase().includes(searchTerm.toLowerCase()));
+      setShowingData(filteredData);
+    } else {
+      refreshTableData();
+    }
+  }, [searchTerm])
+
   return (
     <>
       <Toast ref={toast} />
@@ -141,9 +151,9 @@ export default function CategoryListView() {
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <Card>
           <DataTable value={showingData} editMode="cell" header={() => renderHeader()} headerStyle={{ borderRadius: "12px" }} columnResizeMode="expand" resizableColumns showGridlines>
-            {loading && <ProgressSpinner />}
-            <Column className="categoryName-cell" field="categoryName" header="Tên thể loại" sortable style={{ minWidth: '14rem' }} editor={(options) => textEditor(options)} onCellEditComplete={onCellEditComplete} editorValidator={(e) => e.value.trim().length > 0} />
-            <Column field="parent" header="Thể loại cha" sortable style={{ minWidth: '14rem' }} />
+
+            <Column className="categoryName-cell" field="categoryName" header="Tên thể loại" sortable editor={(options) => textEditor(options)} onCellEditComplete={onCellEditComplete} editorValidator={(e) => e.value.trim().length > 0} />
+            {/* <Column field="parent" header="Thể loại cha" sortable\ /> */}
             <Column headerStyle={{ width: '5rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyTemplate} />
           </DataTable>
           <div className="flex align-items-center mt-3">
@@ -158,6 +168,7 @@ export default function CategoryListView() {
               startIcon={<Iconify icon="mingcute:add-line" />}
               onClick={createNewCategory}
               disabled={loading}
+              loading={loading}
             >
               Tạo thể loại
             </Button>
