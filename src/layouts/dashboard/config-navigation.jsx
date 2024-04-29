@@ -49,11 +49,11 @@ export function useNavData() {
         icon: ICONS.file,
       },
       // INVOICE MANAGER
-      {
-        title: "Giao dịch",
-        path: paths.dashboard.invoice.root,
-        icon: ICONS.invoice,
-      },
+      // {
+      //   title: "Giao dịch",
+      //   path: paths.dashboard.invoice.root,
+      //   icon: ICONS.invoice,
+      // },
       // REPORT
       {
         title: 'Báo cáo',

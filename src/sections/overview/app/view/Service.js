@@ -177,11 +177,9 @@ export async function GetPercentageCategoryProposalStatistic() {
  */
 export async function GetProposalStatistic() {
   try {
-    const response = await axiosPrivate.get(
-      `/dashboard/proposal-statistic`
-    );
+    const response = await axiosPrivate.get(`/dashboard/proposal-statistic`);
     const { data } = response;
-    
+
     const formattedData = {
       labels: data.map((item) => fDate(item.date)),
       datasets: [
@@ -211,11 +209,9 @@ export async function GetProposalStatistic() {
  */
 export async function GetAssetTransactionStatistic() {
   try {
-    const response = await axiosPrivate.get(
-      `/dashboard/asset-transaction-statistic`
-    );
+    const response = await axiosPrivate.get(`/dashboard/asset-transaction-statistic`);
     const { data } = response;
-    
+
     const formattedData = {
       labels: data.map((item) => fDate(item.date)),
       datasets: [
@@ -245,7 +241,11 @@ export async function GetAssetTransactionStatistic() {
  */
 export async function GetTopCreatorMostSellAsset() {
   try {
-    const response = await axiosPrivate.get(`/dashboard/top-creator-asset-transaction-statistic`);
+    const response = await axiosPrivate.get(`/dashboard/top-creator-asset-transaction-statistic`, {
+      params: {
+        topNumber: 3,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error('Không thể lấy dữ liệu nhà sáng tạo bán được nhiều tài nguyên nhất.', error);
@@ -262,7 +262,11 @@ export async function GetTopCreatorMostSellAsset() {
  */
 export async function GetTopCreatorMostHiredProposal() {
   try {
-    const response = await axiosPrivate.get(`/dashboard/top-creator-proposal-statistic`);
+    const response = await axiosPrivate.get(`/dashboard/top-creator-proposal-statistic`, {
+      params: {
+        topNumber: 3,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error('Không thể lấy dữ liệu nhà sáng tạo được nhiều người thuê nhất.', error);
